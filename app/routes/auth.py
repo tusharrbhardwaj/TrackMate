@@ -7,6 +7,7 @@ from sqlalchemy.exc import IntegrityError
 
 auth_bp = Blueprint("auth", __name__)
 
+@auth_bp.route("/registration", methods=["GET", "POST"])
 @auth_bp.route("/register", methods=["GET", "POST"])
 def register():
     form = RegistrationForm()
@@ -20,7 +21,7 @@ def register():
 
         if existing_user:
             flash("Username or email already exists.", "error")
-            return render_template("register.html", form=form)
+            return render_template("registration.html", form=form)
 
         user = User(
             username=form.username.data,
@@ -34,11 +35,11 @@ def register():
         except IntegrityError:
             db.session.rollback()
             flash("Username or email already exists.", "error")
-            return render_template("register.html", form=form)
+            return render_template("registration.html", form=form)
 
         return redirect(url_for("auth.registration_success"))
-    return render_template("register.html", form=form)
+    return render_template("registration.html", form=form)
 
-@auth_bp.route("/registration-success")
+@auth_bp.route("/registr_success")
 def registration_success():
-    return render_template("registration_success.html")
+    return render_template("registr_success.html")
