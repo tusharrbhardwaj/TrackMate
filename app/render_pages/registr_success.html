@@ -1,9 +1,20 @@
-{% extends "base.html" %} {% block title %}Registration Successful{% endblock %}
-{% block content %}
+{% extends "base.html" %} {% block title %}Registration Successful - TrackMate{%
+endblock %} {% block content %}
 
-<h1>Registration successful</h1>
-<p>Your TrackMate account has been created.</p>
-<a href="{{ url_for('auth.register') }}" class="btn btn-primary">
-  Register another account
-</a>
+<div class="row justify-content-center">
+  <div class="col-md-7 col-lg-6">
+    <div class="tm-card text-center">
+      <div class="mb-4">
+        <h1 class="tm-title">Registration Successful</h1>
+        <p class="text-secondary mt-3">
+          Your TrackMate account has been created successfully.
+        </p>
+      </div>
+      <a href="{{ url_for('auth.login') }}" class="btn btn-tm px-5 py-2">
+        Log In
+      </a>
+    </div>
+  </div>
+</div>
+
 {% endblock %}

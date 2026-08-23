@@ -1,0 +1,39 @@
+{% extends "base.html" %} {% block title %}Log In - TrackMate{% endblock %} {%
+block content %}
+
+<div class="row justify-content-center">
+  <div class="col-md-6 col-lg-5">
+    <div class="tm-card">
+      <div class="text-center mb-4">
+        <h1 class="tm-title">Welcome Back</h1>
+        <p class="text-secondary">Log in to continue tracking your progress.</p>
+      </div>
+
+      <form method="POST">
+        {{ form.hidden_tag() }}
+        <div class="mb-3">
+          {{ form.email.label(class="form-label") }} {{
+          form.email(class="form-control") }} {% for error in form.email.errors
+          %}
+          <div class="text-danger mt-1">{{ error }}</div>
+          {% endfor %}
+        </div>
+        <div class="mb-4">
+          {{ form.password.label(class="form-label") }} {{
+          form.password(class="form-control") }} {% for error in
+          form.password.errors %}
+          <div class="text-danger mt-1">{{ error }}</div>
+          {% endfor %}
+        </div>
+        {{ form.submit(class="btn btn-tm w-100 py-2") }}
+      </form>
+
+      <div class="text-center mt-4">
+        <span class="text-secondary"> Don't have an account? </span>
+        <a href="{{ url_for('auth.register') }}"> Register </a>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}
