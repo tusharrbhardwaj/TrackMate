@@ -1,0 +1,52 @@
+{% extends "base.html" %} {% block title %}Home - TrackMate{% endblock %} {%
+block content %}
+
+<div class="mb-5">
+  <h1 class="tm-title">Welcome to TrackMate</h1>
+  <p class="text-secondary">
+    Track your goals, tasks and compete together with your friends!
+  </p>
+</div>
+
+<div class="row g-4">
+  <div class="col-md-4">
+    <div class="tm-card h-100">
+      <h4 class="tm-title">My Goals</h4>
+      <p class="text-secondary mt-3">
+        Create goals and break them down into manageable tasks!
+      </p>
+      <button class="btn btn-tm">Create Goal</button>
+    </div>
+  </div>
+
+  <div class="col-md-4">
+    <div class="tm-card h-100">
+      <h4 class="tm-title">My Progress</h4>
+      <p class="text-secondary mt-3">
+        Keep track of your current progress and deadlines!
+      </p>
+
+      <div
+        class="progress mt-3"
+        style="height: 10px; background-color: #303030"
+      >
+        <div
+          class="progress-bar"
+          style="width: 0%; background-color: #90ee90"
+        ></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-4">
+    <div class="tm-card h-100">
+      <h4 class="tm-title">Friends</h4>
+      <p class="text-secondary mt-3">
+        Compete with friends and track your progress together!
+      </p>
+      <button class="btn btn-tm">Manage Friends</button>
+    </div>
+  </div>
+</div>
+
+{% endblock %}
