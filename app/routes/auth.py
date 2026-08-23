@@ -1,3 +1,5 @@
+# This file contains: register, login, home page routes configurations
+
 from app import db
 from app.forms.registration import RegistrationForm
 from app.forms.login import  LoginForm;
@@ -10,6 +12,10 @@ from werkzeug.security import check_password_hash;
 from flask_login import login_required;
 
 auth_bp = Blueprint("auth", __name__)
+
+@auth_bp.route("/")
+def landing():
+    return render_template("landing.html")
 
 @auth_bp.route("/register", methods=["GET", "POST"])
 def register():

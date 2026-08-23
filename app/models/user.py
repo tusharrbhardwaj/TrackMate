@@ -1,3 +1,5 @@
+# Used DB model
+
 from flask_login import UserMixin
 from datetime import datetime, timezone
 from app import db
