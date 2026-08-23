@@ -1,0 +1,51 @@
+{% extends "base.html" %} {% block title %}Profile - TrackMate{% endblock %} {%
+block content %}
+
+<div class="row justify-content-center">
+  <div class="col-md-6 col-lg-5">
+    <div class="tm-card">
+      <div class="text-center mb-4">
+        <h1 class="tm-title">My Profile</h1>
+        <p class="text-secondary">Manage your TrackMate account information.</p>
+      </div>
+
+      <form method="POST">
+        {{ form.hidden_tag() }}
+
+        <div class="mb-3">
+          {{ form.username.label(class="form-label") }} {{
+          form.username(class="form-control") }} {% for error in
+          form.username.errors %}
+          <div class="text-danger mt-1">{{ error }}</div>
+          {% endfor %}
+        </div>
+        <div class="mb-4">
+          {{ form.email.label(class="form-label") }} {{
+          form.email(class="form-control") }} {% for error in form.email.errors
+          %}
+          <div class="text-danger mt-1">{{ error }}</div>
+          {% endfor %}
+        </div>
+
+        {{ form.submit(class="btn btn-tm w-100 py-2") }}
+      </form>
+
+      <div class="mt-4 pt-3 border-top border-secondary">
+        <div class="d-flex justify-content-between">
+          <span class="text-secondary"> Rating </span>
+
+          <span style="color: #90ee90; font-weight: 600">
+            {{ current_user.rating }}
+          </span>
+        </div>
+
+        <div class="d-flex justify-content-between mt-2">
+          <span class="text-secondary"> Member since </span>
+          <span> {{ current_user.created_at.strftime("%d.%m.%Y") }} </span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

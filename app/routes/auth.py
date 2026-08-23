@@ -65,7 +65,7 @@ def login():
             user.password_hash,
             form.password.data
         ):
-            flash("Password doesn't match", "error")
+            flash("Password doesnt match", "error")
             return render_template("login.html", form=form)
 
         login_user(user)
