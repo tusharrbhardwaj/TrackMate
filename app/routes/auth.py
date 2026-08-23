@@ -9,7 +9,7 @@ from flask import Blueprint, render_template, redirect, url_for, flash;
 from sqlalchemy.exc import IntegrityError
 from flask_login import login_user;
 from werkzeug.security import check_password_hash;
-from flask_login import login_required;
+from flask_login import login_required, current_user;
 
 auth_bp = Blueprint("auth", __name__)
 
@@ -78,7 +78,12 @@ def login():
         return redirect(url_for("auth.home"))
     return render_template("login.html", form=form)
 
+
 @auth_bp.route("/home")
 @login_required
 def home():
-    return render_template("home.html")
+    goals = current_user.goals
+    return render_template(
+        "home.html",
+        goals=goals
+    )

@@ -3,6 +3,7 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
 db = SQLAlchemy()
 login_manager = LoginManager()
+from app.models.goal import Goal;
 
 @login_manager.user_loader
 def load_user(user_id):
@@ -25,8 +26,11 @@ def create_app():
     login_manager.login_view = "auth.login"
     from app.routes.auth import auth_bp
     from app.routes.profile import profile_bp
+    from app.routes.goals import goals_bp
+
     app.register_blueprint(auth_bp)
     app.register_blueprint(profile_bp)
+    app.register_blueprint(goals_bp)
 
     with app.app_context():
         from app.models.user import User
