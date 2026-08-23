@@ -21,7 +21,6 @@
         --tm-white: #ffffff;
         --tm-gray: #b5b5b5;
       }
-
       body {
         background-color: var(--tm-black);
         color: var(--tm-white);
@@ -99,6 +98,17 @@
       a:hover {
         color: var(--tm-green-dark);
       }
+
+      .landing-title {
+        font-size: 5rem;
+        font-weight: 700;
+        color: var(--tm-green);
+      }
+
+      .landing-description {
+        max-width: 650px;
+        margin: 0 auto;
+      }
     </style>
   </head>
 
@@ -110,9 +120,21 @@
         </a>
         <div>
           {% if current_user.is_authenticated %}
-          <a class="nav-link d-inline-block" href="{{ url_for('auth.home') }}">
+
+          <a
+            class="nav-link d-inline-block me-4"
+            href="{{ url_for('auth.home') }}"
+          >
             Home
           </a>
+
+          <a
+            class="nav-link d-inline-block"
+            href="{{ url_for('profile.profile') }}"
+          >
+            Profile
+          </a>
+
           {% else %}
           <a class="nav-link d-inline-block" href="{{ url_for('auth.login') }}">
             Log In
@@ -124,6 +146,7 @@
           >
             Register
           </a>
+
           {% endif %}
         </div>
       </div>
