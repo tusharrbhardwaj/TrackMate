@@ -1,0 +1,47 @@
+{% extends "base.html" %} {% block title %}{{ goal.title }} - TrackMate{%
+endblock %} {% block content %}
+
+<div class="tm-card mb-4">
+  <div class="d-flex justify-content-between align-items-center">
+    <div>
+      <h1 class="tm-title">{{ goal.title }}</h1>
+      {% if goal.description %}
+      <p class="text-secondary mb-0">{{ goal.description }}</p>
+      {% endif %}
+    </div>
+    <a
+      href="{{ url_for('tasks.create_task', goal_id=goal.id) }}"
+      class="btn btn-tm"
+    >
+      + Create Task
+    </a>
+  </div>
+</div>
+
+<div class="tm-card">
+  <h3 class="tm-title mb-4">Tasks</h3>
+  {% if goal.tasks %} {% for task in goal.tasks %}
+  <div class="p-3 mb-3" style="background-color: #202020; border-radius: 8px">
+    <div class="d-flex justify-content-between">
+      <div>
+        <h5>{{ task.title }}</h5>
+        {% if task.description %}
+        <p class="text-secondary mb-2">{{ task.description }}</p>
+        {% endif %}
+      </div>
+      <span style="color: #90ee90"> {{ task.status }} </span>
+    </div>
+    <small class="text-secondary">
+      Deadline: {{ task.deadline.strftime("%d.%m.%Y %H:%M") }}
+    </small>
+  </div>
+  {% endfor %} {% else %}
+  <p class="text-secondary">This goal doesn't have any tasks yet.</p>
+  {% endif %}
+</div>
+<div class="mt-4">
+  <a href="{{ url_for('auth.home') }}" class="text-secondary">
+    ← Back to Home
+  </a>
+</div>
+{% endblock %}

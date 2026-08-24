@@ -29,3 +29,17 @@ def create_goal():
         "create_goal.html",
         form=form
     )
+
+
+@goals_bp.route("/<int:goal_id>")
+@login_required
+def view_goal(goal_id):
+    goal = db.session.get(Goal, goal_id)
+    if goal is None:
+        return "Goal not found", 404
+    if goal.owner_id != current_user.id:
+        return "Access denied", 403
+    return render_template(
+        "goal.html",
+        goal=goal
+    )
