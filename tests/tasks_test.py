@@ -44,7 +44,8 @@ def test_create_task(client, app):
         data={
             "title": "Fly to USA",
             "description": "Go get a ticket.",
-            "deadline": "2026-08-25T18:00"
+            "deadline": "2026-08-25T18:00",
+            "weight": "50"
         },
         follow_redirects=True
     )
@@ -61,7 +62,8 @@ def test_task_belongs_to_goal(client, app):
         data={
             "title": "Fly to USA",
             "description": "Go get a ticket.",
-            "deadline": "2026-08-25T18:00"
+            "deadline": "2026-08-25T18:00",
+            "weight": "50"
         }
     )
     with app.app_context():
@@ -103,3 +105,44 @@ def test_create_task_requires_login(client, app):
         follow_redirects=True
     )
     assert b"Log In" in response.data
+
+# If task sum is > 100%
+def test_task_weight_cannot_exceed_100(client, app):
+    goal_id = create_user_and_goal(client, app)
+    client.post(
+        f"/tasks/create/{goal_id}",
+        data={
+            "title": "Task 1",
+            "description": "First task.",
+            "deadline": "2026-08-25T18:00",
+            "weight": "70"
+        }
+    )
+    response = client.post(
+        f"/tasks/create/{goal_id}",
+        data={
+            "title": "Task 2",
+            "description": "Second task.",
+            "deadline": "2026-08-26T18:00",
+            "weight": "68"
+        },
+        follow_redirects=True
+    )
+    assert response.status_code == 200
+    assert b"cannot be more than 100%" in response.data
+
+# Success 100% allocation
+def test_task_weights_can_equal_100(client, app):
+    goal_id = create_user_and_goal(client, app)
+    response = client.post(
+        f"/tasks/create/{goal_id}",
+        data={
+            "title": "Complete project",
+            "description": "Finish everything.",
+            "deadline": "2026-08-25T18:00",
+            "weight": "100"
+        },
+        follow_redirects=True
+    )
+    assert response.status_code == 200
+    assert b"Complete project" in response.data

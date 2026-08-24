@@ -1,5 +1,6 @@
 from app import db
 
+
 class Task(db.Model):
     __tablename__ = "tasks"
     id = db.Column(db.Integer, primary_key=True)
@@ -18,6 +19,10 @@ class Task(db.Model):
     )
     deadline = db.Column(
         db.DateTime,
+        nullable=False
+    )
+    weight = db.Column(
+        db.Integer,
         nullable=False
     )
     status = db.Column(

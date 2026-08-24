@@ -1,6 +1,6 @@
 from flask_wtf import FlaskForm;
-from wtforms import StringField, TextAreaField, DateTimeLocalField, SubmitField
-from wtforms.validators import DataRequired, Length
+from wtforms import (StringField, TextAreaField, DateTimeLocalField, IntegerField, SubmitField);
+from wtforms.validators import ( DataRequired, Length, NumberRange);
 
 
 class TaskForm(FlaskForm):
@@ -24,4 +24,12 @@ class TaskForm(FlaskForm):
             DataRequired()
         ]
     )
+    weight = IntegerField(
+        "Weight (%)",
+        validators=[
+            DataRequired(),
+            NumberRange(min=1, max=100)
+        ]
+    )
+
     submit = SubmitField("Create Task")

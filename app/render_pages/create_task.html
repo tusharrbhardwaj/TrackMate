@@ -27,10 +27,20 @@
           <div class="text-danger mt-1">{{ error }}</div>
           {% endfor %}
         </div>
-        <div class="mb-4">
+        <div class="mb-3">
           {{ form.deadline.label(class="form-label") }} {{
           form.deadline(class="form-control") }} {% for error in
           form.deadline.errors %}
+          <div class="text-danger mt-1">{{ error }}</div>
+          {% endfor %}
+        </div>
+        <div class="mb-4">
+          {{ form.weight.label(class="form-label") }} {{ form.weight(
+          class="form-control", placeholder="e.g. 25" ) }}
+          <small class="text-secondary">
+            How much does this task contribute to the goal?
+          </small>
+          {% for error in form.weight.errors %}
           <div class="text-danger mt-1">{{ error }}</div>
           {% endfor %}
         </div>
