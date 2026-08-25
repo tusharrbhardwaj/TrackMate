@@ -32,7 +32,9 @@ block content %}
     <div class="d-flex justify-content-between align-items-center">
 
         <h5 class="mb-0">
-            {{ goal.title }}
+            <a href="{{ url_for('goals.view_goal', goal_id=goal.id) }}" style="text-decoration: none;">
+                {{ goal.title }}
+            </a>
         </h5>
 
         <a
