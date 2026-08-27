@@ -1,53 +1,202 @@
-{% extends "base.html" %} {% block title %}Create Task - TrackMate{% endblock %}
+{% extends "base.html" %}
+
+{% block title %}
+Create Task - TrackMate
+{% endblock %}
+
 {% block content %}
 
+
+<!-- ==================== CREATE TASK UI UPDATE START ==================== -->
+
 <div class="row justify-content-center">
-  <div class="col-md-7 col-lg-6">
+  <div class="col-lg-7 col-xl-6">
+
     <div class="tm-card">
-      <div class="text-center mb-4">
-        <h1 class="tm-title">Create Task</h1>
-        <p class="text-secondary">
-          Add a task to:
-          <strong>{{ goal.title }}</strong>
+
+      <!-- HEADER -->
+      <div class="text-center mb-5">
+
+        <h1 class="tm-title mb-2">
+          Create Task
+        </h1>
+
+        <p class="text-secondary mb-0">
+          Add a new task to
+          <strong style="color: #ffffff;">
+            {{ goal.title }}
+          </strong>
         </p>
+
       </div>
+
+
+      <!-- FORM -->
       <form method="POST">
+
         {{ form.hidden_tag() }}
-        <div class="mb-3">
-          {{ form.title.label(class="form-label") }} {{ form.title(
-          class="form-control", placeholder="e.g. Complete Python exercises" )
-          }} {% for error in form.title.errors %}
-          <div class="text-danger mt-1">{{ error }}</div>
-          {% endfor %}
-        </div>
-        <div class="mb-3">
-          {{ form.description.label(class="form-label") }} {{ form.description(
-          class="form-control", rows="4", placeholder="Describe the task..." )
-          }} {% for error in form.description.errors %}
-          <div class="text-danger mt-1">{{ error }}</div>
-          {% endfor %}
-        </div>
-        <div class="mb-3">
-          {{ form.deadline.label(class="form-label") }} {{
-          form.deadline(class="form-control") }} {% for error in
-          form.deadline.errors %}
-          <div class="text-danger mt-1">{{ error }}</div>
-          {% endfor %}
-        </div>
+
+
+        <!-- TASK TITLE -->
         <div class="mb-4">
-          {{ form.weight.label(class="form-label") }} {{ form.weight(
-          class="form-control", placeholder="e.g. 25" ) }}
-          <small class="text-secondary">
-            How much does this task contribute to the goal?
-          </small>
-          {% for error in form.weight.errors %}
-          <div class="text-danger mt-1">{{ error }}</div>
+
+          {{ form.title.label(class="form-label fw-semibold") }}
+
+          <div class="text-secondary small mb-2">
+            Give the task a short and clear name.
+          </div>
+
+          {{
+            form.title(
+              class="form-control py-2",
+              placeholder="e.g. Build frontend dashboard"
+            )
+          }}
+
+          {% for error in form.title.errors %}
+            <div class="text-danger mt-2">
+              {{ error }}
+            </div>
           {% endfor %}
+
         </div>
-        {{ form.submit(class="btn btn-tm w-100 py-2") }}
+
+
+        <!-- DESCRIPTION -->
+        <div class="mb-4">
+
+          {{ form.description.label(class="form-label fw-semibold") }}
+
+          <div class="text-secondary small mb-2">
+            Add details, requirements, or notes for this task.
+          </div>
+
+          {{
+            form.description(
+              class="form-control",
+              rows="5",
+              placeholder="e.g. Build the home page, goal cards, progress section and responsive layout..."
+            )
+          }}
+
+          {% for error in form.description.errors %}
+            <div class="text-danger mt-2">
+              {{ error }}
+            </div>
+          {% endfor %}
+
+        </div>
+
+
+        <!-- DEADLINE + WEIGHT ROW -->
+        <div class="row g-3 mb-4">
+
+
+          <!-- DEADLINE -->
+          <div class="col-md-7">
+
+            {{ form.deadline.label(class="form-label fw-semibold") }}
+
+            <div class="text-secondary small mb-2">
+              When should this task be completed?
+            </div>
+
+            {{
+              form.deadline(
+                class="form-control py-2"
+              )
+            }}
+
+            {% for error in form.deadline.errors %}
+              <div class="text-danger mt-2">
+                {{ error }}
+              </div>
+            {% endfor %}
+
+          </div>
+
+
+          <!-- WEIGHT -->
+          <div class="col-md-5">
+
+            {{ form.weight.label(class="form-label fw-semibold") }}
+
+            <div class="text-secondary small mb-2">
+              Contribution to the goal.
+            </div>
+
+            <div class="input-group">
+
+              {{
+                form.weight(
+                  class="form-control py-2",
+                  placeholder="25"
+                )
+              }}
+
+              <span
+                class="input-group-text"
+                style="
+                  background-color: #202020;
+                  color: #b5b5b5;
+                  border-color: #3a3a3a;
+                "
+              >
+                %
+              </span>
+
+            </div>
+
+            {% for error in form.weight.errors %}
+              <div class="text-danger mt-2">
+                {{ error }}
+              </div>
+            {% endfor %}
+
+          </div>
+
+        </div>
+
+
+        <!-- WEIGHT EXPLANATION -->
+        <div
+          class="p-3 mb-4"
+          style="
+            background-color: #202020;
+            border: 1px solid #2f2f2f;
+            border-radius: 8px;
+          "
+        >
+
+          <div
+            class="small"
+            style="color: #b5b5b5;"
+          >
+            <strong style="color: #90ee90;">
+              Weight example:
+            </strong>
+
+            If this task represents one quarter of the goal,
+            enter <strong style="color: #ffffff;">25</strong>.
+          </div>
+
+        </div>
+
+
+        <!-- SUBMIT BUTTON -->
+        {{
+          form.submit(
+            class="btn btn-tm w-100 py-2"
+          )
+        }}
+
       </form>
+
     </div>
+
   </div>
 </div>
+
+
 
 {% endblock %}

@@ -1,5 +1,7 @@
 {% extends "base.html" %} {% block title %}{{ goal.title }} - TrackMate{%
-endblock %} {% block content %}
+endblock %} {% block content %} {% set total_weight = namespace(value=0) %} {%
+for task in goal.tasks %} {% set total_weight.value = total_weight.value +
+task.weight %} {% endfor %}
 
 <div class="tm-card mb-4">
   <div class="d-flex justify-content-between align-items-center">
@@ -11,17 +13,28 @@ endblock %} {% block content %}
       {% endif %}
     </div>
 
+    {% if total_weight.value >= 100 %}
+
+    <button
+      class="btn btn-secondary"
+      disabled
+      style="cursor: not-allowed; opacity: 0.6"
+    >
+      + Create Task
+    </button>
+
+    {% else %}
+
     <a
       href="{{ url_for('tasks.create_task', goal_id=goal.id) }}"
       class="btn btn-tm"
     >
       + Create Task
     </a>
+
+    {% endif %}
   </div>
 </div>
-
-{% set total_weight = namespace(value=0) %} {% for task in goal.tasks %} {% set
-total_weight.value = total_weight.value + task.weight %} {% endfor %}
 
 <div class="tm-card mb-4">
   <div class="d-flex justify-content-between mb-2">
@@ -36,8 +49,8 @@ total_weight.value = total_weight.value + task.weight %} {% endfor %}
     <div
       class="progress-bar"
       style="
-                width: {{ total_weight.value }}%;
-                background-color: #90ee90;
+              width: {{ total_weight.value }}%;
+              background-color: #90ee90;
             "
     ></div>
   </div>
