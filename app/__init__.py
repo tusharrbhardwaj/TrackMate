@@ -1,10 +1,24 @@
+import os
+
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
+
+#import for dotenv(s)
+from dotenv import load_dotenv
+
+load_dotenv()
+
 db = SQLAlchemy()
 login_manager = LoginManager()
+
 from app.models.goal import Goal;
 from app.models.task import Task;
+
+
+
+
+
 
 @login_manager.user_loader
 def load_user(user_id):
@@ -19,7 +33,7 @@ def create_app():
         template_folder="render_pages",
     )
     app.config["SECRET_KEY"] = "dev-secret-key"
-    app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///trackmate.db"
+    app.config["SQLALCHEMY_DATABASE_URI"] = os.getenv("DATABASE_URL")
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
     db.init_app(app)
