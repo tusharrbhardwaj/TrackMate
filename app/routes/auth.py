@@ -58,13 +58,18 @@ def registration_success():
 def login():
     form = LoginForm()
     if form.validate_on_submit():
+        
+        # below lines will help user to login either with email or username, whichever is feasable
+        identifier = form.email.data.strip()
+        
         user = db.session.execute(
             db.select(User).where(
-                User.email == form.email.data
+                (User.email == identifier) |
+                (User.username == identifier)
             )
         ).scalar_one_or_none()
         if user is None:
-            flash("Incorrect email or password.", "error")
+            flash("Incorrect email/username or password.", "error")
             return render_template("login.html", form=form)
         
         if not check_password_hash(

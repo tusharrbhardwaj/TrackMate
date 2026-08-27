@@ -33,7 +33,10 @@ def create_app():
         template_folder="render_pages",
     )
     app.config["SECRET_KEY"] = "dev-secret-key"
+    
+    #Below line creates the same schema in postgres remote db instead of local sqlite
     app.config["SQLALCHEMY_DATABASE_URI"] = os.getenv("DATABASE_URL")
+    
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
     db.init_app(app)
