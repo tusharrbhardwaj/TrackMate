@@ -1,0 +1,55 @@
+                         USER'S BROWSER
+                               │
+                               │ HTTP request
+                               ▼
+                    ┌────────────────────┐
+                    │    FLASK ROUTES    │
+                    │                    │
+                    │ auth.py            │
+                    │ profile.py         │
+                    │ goals.py           │
+                    │ tasks.py           │
+                    └─────────┬──────────┘
+                              │
+                ┌─────────────┴──────────────┐
+                │                            │
+                ▼                            ▼
+        ┌───────────────┐           ┌─────────────────┐
+        │     FORMS     │           │     MODELS      │
+        │               │           │                 │
+        │ Registration  │           │ User            │
+        │ Login         │           │ Goal            │
+        │ Profile       │           │ Task            │
+        │ Goal          │           └────────┬────────┘
+        │ Task          │                    │
+        └───────────────┘                    ▼
+                                     ┌──────────────┐
+                                     │ SQLAlchemy   │
+                                     └──────┬───────┘
+                                            │
+                                            ▼
+                                     ┌──────────────┐
+                                     │   SQLite     │
+                                     │ trackmate.db │
+                                     └──────────────┘
+
+
+Routes also send information ↓
+
+
+                   ┌─────────────────────┐
+                   │   JINJA TEMPLATES   │
+                   │                     │
+                   │ home.html           │
+                   │ goal.html           │
+                   │ login.html          │
+                   │ profile.html        │
+                   │ etc.                │
+                   └──────────┬──────────┘
+                              │
+                              ▼
+                         USER'S BROWSER
+
+
+
+trackmate#123
