@@ -142,9 +142,12 @@ block content %}
           Compete with friends and track your progress together!
         </p>
 
-        <button class="btn btn-tm">
-          Manage Friends
-        </button>
+        <a
+  href="{{ url_for('friends.friends') }}"
+  class="btn btn-tm"
+>
+  Manage Friends
+</a>
 
       </div>
 
