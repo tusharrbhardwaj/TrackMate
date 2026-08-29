@@ -16,14 +16,9 @@ from app.models.goal import Goal;
 from app.models.task import Task;
 
 
-
-
-
-
 @login_manager.user_loader
 def load_user(user_id):
     from app.models.user import User
-
     return db.session.get(User, int(user_id))
 
 def create_app():
@@ -54,10 +49,9 @@ def create_app():
 
     with app.app_context():
         from app.models.user import User
-
-        @login_manager.user_loader
-        def load_user(user_id):
-            return db.session.get(User, int(user_id))
+        # @login_manager.user_loader
+        # def load_user(user_id):
+        #     return db.session.get(User, int(user_id))
         db.create_all()
 
     return app
