@@ -8,9 +8,11 @@ from flask import (
 )
 from flask_login import login_required, current_user
 from app import db
+from datetime import datetime, timezone
 from app.models.task import Task
 from app.models.proof import Proof
 from app.forms.proof import ProofForm
+from app.models.goal import Goal
 from app.supabase import supabase
 
 
@@ -61,9 +63,9 @@ def submit_proof(task_id):
         word_count = len(
             form.description.data.split()
         )
-        if word_count > 100:
+        if word_count < 100:
             flash(
-                "Explanation cannot contain more than 100 words.",
+                "Explanation must contain at least 100 words.",
                 "error"
             )
             return render_template(
