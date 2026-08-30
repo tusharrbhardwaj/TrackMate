@@ -88,21 +88,76 @@ task.weight %} {% endfor %}
       <span style="color: #90ee90; font-weight: 600"> {{ task.weight }}% </span>
     </div>
 
-    <small class="text-secondary">
-      Deadline: {{ task.deadline.strftime("%d.%m.%Y %H:%M") }}
-    </small>
+    <div class="mt-2">
+      <small class="text-secondary">
+        Deadline: {{ task.deadline.strftime("%d.%m.%Y %H:%M") }}
+      </small>
+    </div>
 
-    <div class="mt-3">
+    {% set pending_proof = namespace(found=false) %} {% for proof in task.proofs
+    %} {% if proof.user_id == current_user.id and proof.status == "PENDING" %}
+    {% set pending_proof.found = true %} {% endif %} {% endfor %}
+
+    <div class="mt-2">
+      {% if pending_proof.found %}
+
+      <!-- Disable button if proof is pending -->
+      <button
+        class="btn btn-secondary btn-sm"
+        disabled
+        style="cursor: not-allowed; opacity: 0.6"
+      >
+        Submit Proof
+      </button>
+
+      {% else %}
+
       <a
         href="{{ url_for(
-            'proof.submit_proof',
-            task_id=task.id
-        ) }}"
+        'proof.submit_proof',
+        task_id=task.id
+      ) }}"
         class="btn btn-tm btn-sm"
       >
         Submit Proof
       </a>
+
+      {% endif %}
     </div>
+
+    {% for proof in task.proofs %} {% if proof.user_id == current_user.id %}
+
+    <!-- Showing proof status -->
+    <div
+      class="mt-3 p-3"
+      style="
+        background-color: #151515;
+        border-radius: 8px;
+        border: 1px solid #2a2a2a;
+      "
+    >
+      <strong style="color: #90ee90"> Proof submitted </strong>
+
+      {% if proof.status == "PENDING" %}
+
+      <p class="text-secondary mb-0 mt-1">
+        Proof is under review. A friend needs to approve it.
+      </p>
+
+      {% elif proof.status == "APPROVED" %}
+
+      <p class="mb-0 mt-1" style="color: #90ee90">
+        Your proof has been approved.
+      </p>
+
+      {% elif proof.status == "REJECTED" %}
+
+      <p class="text-danger mb-0 mt-1">Your proof was rejected.</p>
+
+      {% endif %}
+    </div>
+
+    {% endif %} {% endfor %}
   </div>
 
   {% endfor %} {% else %}

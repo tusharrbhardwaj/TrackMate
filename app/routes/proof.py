@@ -32,6 +32,28 @@ def submit_proof(task_id):
         return "Task not found", 404
     if task.goal.owner_id != current_user.id:
         return "Access denied", 403
+
+    # Making sure that user didnt upload a proof before
+    existing_proof = db.session.execute(
+    db.select(Proof).where(
+        Proof.task_id == task.id,
+        Proof.user_id == current_user.id,
+        Proof.status == "PENDING"
+        )
+    ).scalar_one_or_none()
+
+    if existing_proof:
+        flash(
+            "You already have a proof waiting for review.",
+            "error"
+        )
+        return redirect(
+            url_for(
+                "goals.view_goal",
+                goal_id=task.goal_id
+            )
+        )
+    
     form = ProofForm()
 
     if form.validate_on_submit():
@@ -45,7 +67,7 @@ def submit_proof(task_id):
                 "error"
             )
             return render_template(
-                "submit_proof.html",
+                "proof.html",
                 form=form,
                 task=task
             )
