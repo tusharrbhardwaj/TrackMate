@@ -44,12 +44,14 @@ def create_app():
     from app.routes.goals import goals_bp;
     from app.routes.tasks import tasks_bp;
     from app.routes.friends import friends_bp
+    from app.routes.proof import proof_bp;
 
     app.register_blueprint(auth_bp)
     app.register_blueprint(profile_bp)
     app.register_blueprint(goals_bp)
     app.register_blueprint(tasks_bp)
     app.register_blueprint(friends_bp)
+    app.register_blueprint(proof_bp)
 
     with app.app_context():
         from app.models.user import User

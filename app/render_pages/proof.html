@@ -1,0 +1,36 @@
+{% extends "base.html" %} {% block title %}Submit Proof - TrackMate{% endblock
+%} {% block content %}
+
+<div class="row justify-content-center">
+  <div class="col-md-7 col-lg-6">
+    <div class="tm-card">
+      <div class="text-center mb-4">
+        <h1 class="tm-title">Submit Proof</h1>
+        <p class="text-secondary">{{ task.title }}</p>
+      </div>
+      <form method="POST" enctype="multipart/form-data">
+        {{ form.hidden_tag() }}
+
+        <div class="mb-4">
+          {{ form.description.label( class="form-label" ) }} {{
+          form.description( class="form-control", rows="6", placeholder="Explain
+          how you completed this task..." ) }}
+          <small class="text-secondary"> Maximum 100 words. </small>
+          {% for error in form.description.errors %}
+          <div class="text-danger mt-1">{{ error }}</div>
+          {% endfor %}
+        </div>
+
+        <div class="mb-4">
+          {{ form.photo.label( class="form-label" ) }} {{ form.photo(
+          class="form-control" ) }} {% for error in form.photo.errors %}
+          <div class="text-danger mt-1">{{ error }}</div>
+          {% endfor %}
+        </div>
+        {{ form.submit( class="btn btn-tm w-100 py-2" ) }}
+      </form>
+    </div>
+  </div>
+</div>
+
+{% endblock %}
