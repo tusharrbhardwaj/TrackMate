@@ -98,6 +98,7 @@ def submit_proof(task_id):
         )
 
         db.session.add(proof)
+        task.status = "PENDING_REVIEW"
         db.session.commit()
         flash(
             "Proof submitted successfully.",
@@ -113,4 +114,193 @@ def submit_proof(task_id):
         "proof.html",
         form=form,
         task=task
+    )
+    
+#supervisor review page
+
+@proof_bp.route("/reviews")
+@login_required
+def reviews():
+
+    pending_proofs = db.session.execute(
+
+        db.select(Proof)
+        .join(Task, Proof.task_id == Task.id)
+        .join(Goal, Task.goal_id == Goal.id)
+        .where(
+            Goal.supervisor_id == current_user.id,
+            Proof.status == "PENDING"
+        )
+
+    ).scalars().all()
+
+
+    review_items = []
+
+    for proof in pending_proofs:
+
+        photo_url = None
+
+        try:
+
+            signed = (
+                supabase.storage
+                .from_("proofs")
+                .create_signed_url(
+                    proof.photo_path,
+                    3600
+                )
+            )
+
+            photo_url = (
+                signed.get("signedURL")
+                or signed.get("signed_url")
+                or signed.get("url")
+            )
+
+        except Exception as error:
+
+            print(
+                "Could not create proof image URL:",
+                error
+            )
+
+
+        review_items.append(
+            {
+                "proof": proof,
+                "photo_url": photo_url
+            }
+        )
+
+
+    return render_template(
+        "reviews.html",
+        review_items=review_items
+    )
+
+
+#aproove proof system
+
+@proof_bp.route(
+    "/approve/<int:proof_id>",
+    methods=["POST"]
+)
+@login_required
+def approve_proof(proof_id):
+
+    proof = db.session.get(
+        Proof,
+        proof_id
+    )
+
+
+    if proof is None:
+
+        return "Proof not found", 404
+
+
+    # ONLY assigned supervisor can review it
+    if proof.task.goal.supervisor_id != current_user.id:
+
+        return "Access denied", 403
+
+
+    if proof.status != "PENDING":
+
+        flash(
+            "This proof has already been reviewed.",
+            "error"
+        )
+
+        return redirect(
+            url_for("proof.reviews")
+        )
+
+
+    proof.status = "APPROVED"
+
+    proof.task.status = "COMPLETED"
+
+    proof.task.completed_at = datetime.now(
+        timezone.utc
+    )
+
+    # Owner receives +1 rating
+    proof.user.rating += 1
+
+
+    db.session.commit()
+
+
+    flash(
+        f"Proof approved. {proof.user.username} received +1 rating.",
+        "success"
+    )
+
+
+    return redirect(
+        url_for("proof.reviews")
+    )
+
+
+#decline proof
+
+@proof_bp.route(
+    "/reject/<int:proof_id>",
+    methods=["POST"]
+)
+@login_required
+def reject_proof(proof_id):
+
+    proof = db.session.get(
+        Proof,
+        proof_id
+    )
+
+
+    if proof is None:
+
+        return "Proof not found", 404
+
+
+    # ONLY assigned supervisor can review it
+    if proof.task.goal.supervisor_id != current_user.id:
+
+        return "Access denied", 403
+
+
+    if proof.status != "PENDING":
+
+        flash(
+            "This proof has already been reviewed.",
+            "error"
+        )
+
+        return redirect(
+            url_for("proof.reviews")
+        )
+
+
+    proof.status = "REJECTED"
+
+    proof.task.status = "ACTIVE"
+
+    proof.task.completed_at = None
+
+    # Owner loses 1 rating
+    proof.user.rating -= 1
+
+
+    db.session.commit()
+
+
+    flash(
+        f"Proof rejected. {proof.user.username} received -1 rating.",
+        "success"
+    )
+
+
+    return redirect(
+        url_for("proof.reviews")
     )
