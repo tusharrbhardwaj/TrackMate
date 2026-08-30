@@ -71,7 +71,10 @@ def view_goal(goal_id):
     if goal is None:
         return "Goal not found", 404
 
-    if goal.owner_id != current_user.id:
+    if (
+    goal.owner_id != current_user.id
+    and goal.supervisor_id != current_user.id
+    ):
         return "Access denied", 403
 
 

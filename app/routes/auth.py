@@ -4,6 +4,7 @@ from app import db
 from app.forms.registration import RegistrationForm
 from app.forms.login import  LoginForm;
 from app.models.user import User;
+from app.models.goal import Goal;
 from werkzeug.security import generate_password_hash;
 from flask import Blueprint, render_template, redirect, url_for, flash;
 from sqlalchemy.exc import IntegrityError
@@ -88,7 +89,14 @@ def login():
 @login_required
 def home():
     goals = current_user.goals
+    supervised_goals = db.session.execute(
+        db.select(Goal).where(
+            Goal.supervisor_id == current_user.id
+        )
+    ).scalars().all()
+
     return render_template(
         "home.html",
-        goals=goals
+        goals=goals,
+        supervised_goals=supervised_goals
     )
