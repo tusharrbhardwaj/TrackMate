@@ -6,6 +6,8 @@ from app.forms.goal import GoalForm
 from app.models.goal import Goal
 from app.models.user import User
 from app.models.friendship import Friendship
+from app.models.task import Task
+from app.models.proof import Proof
 
 
 goals_bp = Blueprint(
@@ -207,4 +209,52 @@ def assign_supervisor(goal_id, user_id):
             "goals.view_goal",
             goal_id=goal.id
         )
+    )
+    
+# DELETE GOAL
+
+@goals_bp.route(
+    "/<int:goal_id>/delete",
+    methods=["POST"]
+)
+@login_required
+def delete_goal(goal_id):
+
+    goal = db.session.get(
+        Goal,
+        goal_id
+    )
+
+    if goal is None:
+        return "Goal not found", 404
+
+
+    # Only the owner can delete the goal
+    if goal.owner_id != current_user.id:
+        return "Access denied", 403
+
+
+    # Delete proofs first, then tasks
+    for task in list(goal.tasks):
+
+        for proof in list(task.proofs):
+            db.session.delete(proof)
+
+        db.session.delete(task)
+
+
+    # Finally delete the goal
+    db.session.delete(goal)
+
+    db.session.commit()
+
+
+    flash(
+        f'Goal "{goal.title}" deleted successfully.',
+        "success"
+    )
+
+
+    return redirect(
+        url_for("auth.home")
     )
