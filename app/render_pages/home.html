@@ -1,23 +1,42 @@
-{% extends "base.html" %} {% block title %}Home - TrackMate{% endblock %} {%
-block content %}
+{% extends "base.html" %}
+
+{% block title %}
+Home - TrackMate
+{% endblock %}
+
+{% block content %}
+
+
+<!-- Used for calculating progress across ALL goals -->
+{% set overall = namespace(completed=0, goals=0) %}
+
 
 <div class="mb-5">
-  <h1 class="tm-title">Welcome to TrackMate</h1>
+
+  <h1 class="tm-title">
+    Welcome to TrackMate
+  </h1>
+
   <p class="text-secondary">
     Track your goals, tasks and compete together with your friends!
   </p>
+
 </div>
 
 
-<!-- ==================== LAYOUT UPDATE START ==================== -->
-
 <div class="row g-4 align-items-start">
 
-  <!-- LEFT SIDE: GOALS -->
+
+  <!-- ==================== LEFT SIDE ==================== -->
+
   <div class="col-lg-8">
+
     <div class="tm-card">
 
-      <div class="d-flex justify-content-between align-items-center mb-4">
+      <div
+        class="d-flex justify-content-between align-items-center mb-4"
+      >
+
         <h4 class="tm-title mb-0">
           My Goals
         </h4>
@@ -28,12 +47,51 @@ block content %}
         >
           + Create Goal
         </a>
+
       </div>
+
 
 
       {% if goals %}
 
+
         {% for goal in goals %}
+
+
+          <!-- Calculate THIS goal -->
+          {% set stats = namespace(
+            allocation=0,
+            progress=0
+          ) %}
+
+
+          {% for task in goal.tasks %}
+
+            {% set stats.allocation =
+              stats.allocation + task.weight
+            %}
+
+            {% if task.status == "COMPLETED" %}
+
+              {% set stats.progress =
+                stats.progress + task.weight
+              %}
+
+            {% endif %}
+
+          {% endfor %}
+
+
+          <!-- Add this goal to overall progress -->
+          {% set overall.completed =
+            overall.completed + stats.progress
+          %}
+
+          {% set overall.goals =
+            overall.goals + 1
+          %}
+
+
 
           <div
             class="mb-3 p-3"
@@ -43,37 +101,143 @@ block content %}
             "
           >
 
-            <div class="d-flex justify-content-between align-items-center">
+
+            <!-- GOAL HEADER -->
+
+            <div
+              class="d-flex justify-content-between align-items-center"
+            >
 
               <h5 class="mb-0">
+
                 <a
-                  href="{{ url_for('goals.view_goal', goal_id=goal.id) }}"
+                  href="{{ url_for(
+                    'goals.view_goal',
+                    goal_id=goal.id
+                  ) }}"
                   style="text-decoration: none;"
                 >
                   {{ goal.title }}
                 </a>
+
               </h5>
 
 
-              <a
-                href="{{ url_for('tasks.create_task', goal_id=goal.id) }}"
-                class="btn btn-tm btn-sm"
-              >
-                + Create Task
-              </a>
+              <!-- Disable Create Task at 100% allocation -->
+
+              {% if stats.allocation >= 100 %}
+
+                <button
+                  class="btn btn-secondary btn-sm"
+                  disabled
+                  style="
+                    cursor: not-allowed;
+                    opacity: 0.6;
+                  "
+                >
+                  + Create Task
+                </button>
+
+              {% else %}
+
+                <a
+                  href="{{ url_for(
+                    'tasks.create_task',
+                    goal_id=goal.id
+                  ) }}"
+                  class="btn btn-tm btn-sm"
+                >
+                  + Create Task
+                </a>
+
+              {% endif %}
 
             </div>
 
 
+
             {% if goal.description %}
 
-              <p class="text-secondary mt-2 mb-0">
+              <p class="text-secondary mt-2 mb-3">
                 {{ goal.description }}
               </p>
 
             {% endif %}
 
+
+
+            <!-- ==================== GOAL PROGRESS ==================== -->
+
+            <div
+              class="d-flex justify-content-between align-items-center mb-1"
+            >
+
+              <small class="text-secondary">
+                Progress
+              </small>
+
+              <small
+                style="
+                  color: #90ee90;
+                  font-weight: 600;
+                "
+              >
+                {{ stats.progress }}%
+              </small>
+
+            </div>
+
+
+            <div
+              class="progress"
+              style="
+                height: 8px;
+                background-color: #303030;
+              "
+            >
+
+              <div
+                class="progress-bar"
+                style="
+                  width: {{ stats.progress }}%;
+                  background-color: #90ee90;
+                "
+              >
+              </div>
+
+            </div>
+
+
+            <!-- STATUS -->
+
+            <div class="mt-2">
+
+              {% if stats.progress >= 100 %}
+
+                <small style="color: #90ee90;">
+                  ✓ Goal completed
+                </small>
+
+              {% elif stats.progress > 0 %}
+
+                <small class="text-secondary">
+                  {{ 100 - stats.progress }}%
+                  remaining
+                </small>
+
+              {% else %}
+
+                <small class="text-secondary">
+                  No completed tasks yet.
+                </small>
+
+              {% endif %}
+
+            </div>
+
+
           </div>
+
 
         {% endfor %}
 
@@ -86,25 +250,57 @@ block content %}
 
       {% endif %}
 
+
     </div>
+
   </div>
 
 
 
-  <!-- RIGHT SIDE -->
+  <!-- ==================== RIGHT SIDE ==================== -->
+
   <div class="col-lg-4">
 
     <div class="d-flex flex-column gap-4">
 
-      <!-- MY PROGRESS -->
+
+      <!-- ==================== OVERALL PROGRESS ==================== -->
+
       <div class="tm-card">
 
-        <h4 class="tm-title">
-          My Progress
-        </h4>
+
+        {% if overall.goals > 0 %}
+
+          {% set overall_progress =
+            (overall.completed / overall.goals)
+            | round
+            | int
+          %}
+
+        {% else %}
+
+          {% set overall_progress = 0 %}
+
+        {% endif %}
+
+
+        <div
+          class="d-flex justify-content-between align-items-center"
+        >
+
+          <h4 class="tm-title mb-0">
+            My Progress
+          </h4>
+
+          <strong style="color: #90ee90;">
+            {{ overall_progress }}%
+          </strong>
+
+        </div>
+
 
         <p class="text-secondary mt-3">
-          Keep track of your current progress and deadlines!
+          Your progress across all active goals.
         </p>
 
 
@@ -119,7 +315,7 @@ block content %}
           <div
             class="progress-bar"
             style="
-              width: 0%;
+              width: {{ overall_progress }}%;
               background-color: #90ee90;
             "
           >
@@ -127,11 +323,25 @@ block content %}
 
         </div>
 
+
+        {% if overall_progress == 100 %}
+
+          <small
+            class="d-block mt-2"
+            style="color: #90ee90;"
+          >
+            All goals completed 🎉
+          </small>
+
+        {% endif %}
+
+
       </div>
 
 
 
-      <!-- FRIENDS -->
+      <!-- ==================== FRIENDS ==================== -->
+
       <div class="tm-card">
 
         <h4 class="tm-title">
@@ -143,21 +353,21 @@ block content %}
         </p>
 
         <a
-  href="{{ url_for('friends.friends') }}"
-  class="btn btn-tm"
->
-  Manage Friends
-</a>
+          href="{{ url_for('friends.friends') }}"
+          class="btn btn-tm"
+        >
+          Manage Friends
+        </a>
 
       </div>
+
 
     </div>
 
   </div>
 
-</div>
 
-<!-- ==================== LAYOUT UPDATE END ==================== -->
+</div>
 
 
 {% endblock %}
