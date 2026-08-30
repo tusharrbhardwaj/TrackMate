@@ -16,6 +16,8 @@ block content %}
   <!-- ==================== LEFT SIDE ==================== -->
 
   <div class="col-lg-8">
+    <!-- ==================== MY GOALS ==================== -->
+
     <div class="tm-card">
       <div class="d-flex justify-content-between align-items-center mb-4">
         <h4 class="tm-title mb-0">My Goals</h4>
@@ -28,14 +30,18 @@ block content %}
       {% if goals %} {% for goal in goals %}
 
       <!-- Calculate THIS goal -->
+
       {% set stats = namespace( allocation=0, progress=0 ) %} {% for task in
       goal.tasks %} {% set stats.allocation = stats.allocation + task.weight %}
       {% if task.status == "COMPLETED" %} {% set stats.progress = stats.progress
       + task.weight %} {% endif %} {% endfor %}
 
       <!-- Add this goal to overall progress -->
+
       {% set overall.completed = overall.completed + stats.progress %} {% set
       overall.goals = overall.goals + 1 %}
+
+      <!-- GOAL -->
 
       <div
         class="mb-3 p-3"
@@ -56,8 +62,6 @@ block content %}
             </a>
           </h5>
 
-          <!-- Disable Create Task at 100% allocation -->
-
           <div class="d-flex gap-2">
             <!-- CREATE TASK -->
 
@@ -75,9 +79,9 @@ block content %}
 
             <a
               href="{{ url_for(
-        'tasks.create_task',
-        goal_id=goal.id
-      ) }}"
+                      'tasks.create_task',
+                      goal_id=goal.id
+                    ) }}"
               class="btn btn-tm btn-sm"
             >
               + Create Task
@@ -90,9 +94,9 @@ block content %}
             <form
               method="POST"
               action="{{ url_for(
-      'goals.delete_goal',
-      goal_id=goal.id
-    ) }}"
+                    'goals.delete_goal',
+                    goal_id=goal.id
+                  ) }}"
               onsubmit="
                 return confirm(
                   'Delete this goal and all of its tasks and proofs?',
@@ -106,13 +110,15 @@ block content %}
           </div>
         </div>
 
+        <!-- DESCRIPTION -->
+
         {% if goal.description %}
 
         <p class="text-secondary mt-2 mb-3">{{ goal.description }}</p>
 
         {% endif %}
 
-        <!-- ==================== GOAL PROGRESS ==================== -->
+        <!-- GOAL PROGRESS -->
 
         <div class="d-flex justify-content-between align-items-center mb-1">
           <small class="text-secondary"> Progress </small>
@@ -156,6 +162,45 @@ block content %}
       {% endfor %} {% else %}
 
       <p class="text-secondary">You don't have any goals yet.</p>
+
+      {% endif %}
+    </div>
+
+    <!-- ==================== SUPERVISED GOALS ==================== -->
+
+    <div class="tm-card mt-4">
+      <h4 class="tm-title mb-4">Supervised Goals</h4>
+
+      {% if supervised_goals %} {% for goal in supervised_goals %}
+
+      <div
+        class="mb-3 p-3 d-flex justify-content-between align-items-center"
+        style="background-color: #202020; border-radius: 8px"
+      >
+        <div>
+          <h5 class="mb-1">{{ goal.title }}</h5>
+
+          {% if goal.description %}
+
+          <p class="text-secondary mb-0">{{ goal.description }}</p>
+
+          {% endif %}
+        </div>
+
+        <a
+          href="{{ url_for(
+                'goals.view_goal',
+                goal_id=goal.id
+              ) }}"
+          class="btn btn-tm btn-sm"
+        >
+          View Goal
+        </a>
+      </div>
+
+      {% endfor %} {% else %}
+
+      <p class="text-secondary mb-0">You are not supervising any goals yet.</p>
 
       {% endif %}
     </div>

@@ -59,7 +59,7 @@ def submit_proof(task_id):
     form = ProofForm()
 
     if form.validate_on_submit():
-        # Check description length 100 words max
+        # Check description length 100 words min
         word_count = len(
             form.description.data.split()
         )
