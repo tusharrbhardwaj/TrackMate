@@ -3,6 +3,8 @@ endblock %} {% block content %} {% set total_weight = namespace(value=0) %} {%
 for task in goal.tasks %} {% set total_weight.value = total_weight.value +
 task.weight %} {% endfor %}
 
+<!-- ==================== GOAL HEADER ==================== -->
+
 <div class="tm-card mb-4">
   <div class="d-flex justify-content-between align-items-center">
     <div>
@@ -43,7 +45,7 @@ task.weight %} {% endfor %}
   </div>
 </div>
 
-<!--SUPERVISOR-->
+<!-- ==================== SUPERVISOR ==================== -->
 
 {% if goal.owner_id == current_user.id %}
 
@@ -94,10 +96,10 @@ task.weight %} {% endfor %}
     <form
       method="POST"
       action="{{ url_for(
-        'goals.assign_supervisor',
-        goal_id=goal.id,
-        user_id=friend.id
-      ) }}"
+            'goals.assign_supervisor',
+            goal_id=goal.id,
+            user_id=friend.id
+          ) }}"
     >
       <button type="submit" class="btn btn-tm btn-sm">Assign Supervisor</button>
     </form>
@@ -118,7 +120,7 @@ task.weight %} {% endfor %}
 
 {% endif %}
 
-<!-- Goal Allocation -->
+<!-- ==================== GOAL ALLOCATION ==================== -->
 
 <div class="tm-card mb-4">
   <div class="d-flex justify-content-between mb-2">
@@ -152,7 +154,7 @@ task.weight %} {% endfor %}
   {% endif %}
 </div>
 
-<!-- tasks -->
+<!-- ==================== TASKS ==================== -->
 
 <div class="tm-card">
   <h3 class="tm-title mb-4">Tasks</h3>
@@ -160,7 +162,7 @@ task.weight %} {% endfor %}
   {% if goal.tasks %} {% for task in goal.tasks %}
 
   <div class="p-3 mb-3" style="background-color: #202020; border-radius: 8px">
-    <!-- TASK HEADER -->
+    <!-- ==================== TASK HEADER ==================== -->
 
     <div class="d-flex justify-content-between">
       <div>
@@ -176,13 +178,15 @@ task.weight %} {% endfor %}
       <span style="color: #90ee90; font-weight: 600"> {{ task.weight }}% </span>
     </div>
 
+    <!-- ==================== DEADLINE ==================== -->
+
     <div class="mt-2">
       <small class="text-secondary">
         Deadline: {{ task.deadline.strftime("%d.%m.%Y %H:%M") }}
       </small>
     </div>
 
-    <!-- owner only -->
+    <!-- ==================== OWNER ONLY ==================== -->
 
     {% if goal.owner_id == current_user.id %}
 
@@ -192,7 +196,8 @@ task.weight %} {% endfor %}
     %} {% if proof.user_id == current_user.id %} {% set proof_status.value =
     proof.status %} {% endif %} {% endfor %}
 
-    <!-- SUBMIT PROOF BUTTON SWITCH DEPENDING ON PROOF STATUS -->
+    <!-- ==================== SUBMIT PROOF ==================== -->
+
     <div class="mt-2">
       {% if proof_status.value == "PENDING" or proof_status.value == "APPROVED"
       %}
@@ -209,9 +214,9 @@ task.weight %} {% endfor %}
 
       <a
         href="{{ url_for(
-              'proof.submit_proof',
-              task_id=task.id
-            ) }}"
+                  'proof.submit_proof',
+                  task_id=task.id
+                ) }}"
         class="btn btn-tm btn-sm"
       >
         Submit Proof
@@ -219,8 +224,6 @@ task.weight %} {% endfor %}
 
       {% endif %}
     </div>
-
-    <!-- proof status -->
 
     <!-- ==================== PROOF INFORMATION ==================== -->
 
@@ -256,6 +259,10 @@ task.weight %} {% endfor %}
     </div>
 
     {% endfor %}
+
+    <!-- IMPORTANT: closes OWNER ONLY -->
+
+    {% endif %}
   </div>
 
   {% endfor %} {% else %}
@@ -265,7 +272,7 @@ task.weight %} {% endfor %}
   {% endif %}
 </div>
 
-<!-- home -->
+<!-- ==================== BACK TO HOME ==================== -->
 
 <div class="mt-4">
   <a href="{{ url_for('auth.home') }}" class="text-secondary">
