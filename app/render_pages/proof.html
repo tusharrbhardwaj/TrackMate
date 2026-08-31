@@ -13,8 +13,7 @@
 
         <div class="mb-4">
           {{ form.description.label( class="form-label" ) }} {{
-          form.description( class="form-control", rows="6", placeholder="Explain
-          how you completed this task..." ) }}
+          form.description( class="form-control", rows="6") }}
           <small class="text-secondary"> Maximum 100 words. </small>
           {% for error in form.description.errors %}
           <div class="text-danger mt-1">{{ error }}</div>

@@ -225,9 +225,11 @@ task.weight %} {% endfor %}
       {% endif %}
     </div>
 
+    {% endif %}
+
     <!-- ==================== PROOF INFORMATION ==================== -->
 
-    {% for proof in task.proofs %}
+    {% if task.proofs %} {% for proof in task.proofs %}
 
     <div
       class="mt-3 p-3"
@@ -258,11 +260,7 @@ task.weight %} {% endfor %}
       {% endif %}
     </div>
 
-    {% endfor %}
-
-    <!-- IMPORTANT: closes OWNER ONLY -->
-
-    {% endif %}
+    {% endfor %} {% endif %}
   </div>
 
   {% endfor %} {% else %}
