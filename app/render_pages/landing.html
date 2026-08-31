@@ -5,26 +5,103 @@ TrackMate
 {% endblock %}
 
 {% block content %}
+<style>
+  .trackmate-hero {
+    position: relative;
+
+    /* escape base.html's Bootstrap container */
+    width: 100vw;
+    margin-left: calc(50% - 50vw);
+    margin-top: -3rem;
+
+    min-height: calc(100vh - 70px);
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    overflow: hidden;
+
+    background:
+      linear-gradient(
+        180deg,
+        rgba(5, 5, 5, 0.72) 0%,
+        rgba(5, 5, 5, 0.78) 55%,
+        #0a0a0a 100%
+      ),
+      url("{{ url_for('static', filename='images/bg2.jpeg') }}");
+
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+  }
+
+  .trackmate-hero::before {
+    content: "";
+    position: absolute;
+    inset: -15px;
+
+    backdrop-filter: blur(2px);
+    -webkit-backdrop-filter: blur(2px);
+
+    background:
+      radial-gradient(
+        circle at center,
+        rgba(144, 238, 144, 0.08),
+        transparent 45%
+      );
+
+    pointer-events: none;
+  }
+
+  .trackmate-hero-content {
+    position: relative;
+    z-index: 2;
+
+    max-width: 850px;
+    padding: 70px 25px;
+  }
+
+  .trackmate-hero .landing-title {
+    font-size: clamp(4rem, 8vw, 6.5rem);
+    text-shadow: 0 4px 35px rgba(0, 0, 0, 0.8);
+  }
+
+  .trackmate-hero-description {
+    max-width: 720px;
+    margin-left: auto;
+    margin-right: auto;
+    color: #b4b4b4;
+  }
+
+  @media (max-width: 768px) {
+    .trackmate-hero {
+      background-attachment: scroll;
+    }
+  }
+</style>
 
 
+<section class="trackmate-hero">
 
-<section
-  class="text-center d-flex align-items-center justify-content-center"
-  style="min-height: 72vh;"
->
-
-  <div>
+  <div class="trackmate-hero-content text-center">
 
     <h1 class="landing-title">
       TrackMate
     </h1>
 
-    <p class="lead text-secondary mt-4 landing-description">
+    <p
+      class="lead mt-4 trackmate-hero-description"
+      style="
+        font-size: 1.4rem;
+        line-height: 1.6;
+      "
+    >
       Achieve your goals, divide huge tasks into smaller steps,
       and become better together with your friends.
     </p>
 
-    <p class="text-secondary">
+    <p class="trackmate-hero-description mt-3">
       Create goals, divide them into tasks, prove your progress
       and stay accountable with people you trust.
     </p>
@@ -47,22 +124,6 @@ TrackMate
       </a>
 
     </div>
-
-
-    <!-- {% if current_user.is_authenticated %}
-
-      <div class="mt-4">
-
-        <a
-          href="{{ url_for('auth.home') }}"
-          class="text-secondary"
-        >
-          Proceed to Home →
-        </a>
-
-      </div>
-
-    {% endif %} -->
 
   </div>
 
