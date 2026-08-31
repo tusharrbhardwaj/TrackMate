@@ -1,39 +1,658 @@
-{% extends "base.html" %} {% block title %}TrackMate{% endblock %} {% block
-content %}
+{% extends "base.html" %}
 
-<div class="row justify-content-center text-center">
-  <div class="col-lg-8">
+{% block title %}
+TrackMate
+{% endblock %}
+
+{% block content %}
+
+
+
+<section
+  class="text-center d-flex align-items-center justify-content-center"
+  style="min-height: 72vh;"
+>
+
+  <div>
+
+    <h1 class="landing-title">
+      TrackMate
+    </h1>
+
+    <p class="lead text-secondary mt-4 landing-description">
+      Achieve your goals, divide huge tasks into smaller steps,
+      and become better together with your friends.
+    </p>
+
+    <p class="text-secondary">
+      Create goals, divide them into tasks, prove your progress
+      and stay accountable with people you trust.
+    </p>
+
+
     <div class="mt-5">
-      <h1 class="landing-title">TrackMate</h1>
-      <p class="lead text-secondary mt-4 landing-description">
-        Achieve your goals, devide huge tasks in small steps and become better
-        together with your friends!
-      </p>
-      <p class="text-secondary">
-        Create goals, divide them into tasks, track your progress and compete
-        with your friends.
-      </p>
-      <div class="mt-5">
-        <a
-          href="{{ url_for('auth.register') }}"
-          class="btn btn-tm btn-lg px-5 me-2"
-        >
-          Register
-        </a>
-        <a
-          href="{{ url_for('auth.login') }}"
-          class="btn btn-outline-light btn-lg px-5"
-        >
-          Log In
-        </a>
-      </div>
-      <div class="mt-4">
-        <a href="{{ url_for('auth.home') }}" class="text-secondary">
-          Proceed to Home
-        </a>
-      </div>
+
+      <a
+        href="{{ url_for('auth.register') }}"
+        class="btn btn-tm btn-lg px-5 me-2"
+      >
+        Get Started
+      </a>
+
+      <a
+        href="{{ url_for('auth.login') }}"
+        class="btn btn-outline-light btn-lg px-5"
+      >
+        Log In
+      </a>
+
     </div>
+
+
+    {% if current_user.is_authenticated %}
+
+      <div class="mt-4">
+
+        <a
+          href="{{ url_for('auth.home') }}"
+          class="text-secondary"
+        >
+          Proceed to Home →
+        </a>
+
+      </div>
+
+    {% endif %}
+
   </div>
-</div>
+
+</section>
+
+
+
+<section class="py-5">
+
+  <div class="row justify-content-center">
+
+    <div class="col-lg-8 text-center">
+
+      <p
+        class="text-uppercase mb-2"
+        style="
+          color: #90ee90;
+          letter-spacing: 2px;
+          font-size: 0.8rem;
+          font-weight: 700;
+        "
+      >
+        More than a to-do list
+      </p>
+
+      <h2 class="tm-title mb-4">
+        Goals are easier when someone keeps you accountable.
+      </h2>
+
+      <p class="text-secondary fs-5">
+        TrackMate combines goal management with social accountability.
+        Instead of simply ticking a task as complete, your progress can
+        be verified by a friend you trust.
+      </p>
+
+    </div>
+
+  </div>
+
+</section>
+
+
+
+<section class="py-5">
+
+  <div class="text-center mb-5">
+
+    <p
+      class="text-uppercase mb-2"
+      style="
+        color: #90ee90;
+        letter-spacing: 2px;
+        font-size: 0.8rem;
+        font-weight: 700;
+      "
+    >
+      Simple workflow
+    </p>
+
+    <h2 class="tm-title">
+      How TrackMate works
+    </h2>
+
+    <p class="text-secondary">
+      From setting a goal to having your progress verified.
+    </p>
+
+  </div>
+
+
+  <div class="row g-4">
+
+
+    <!-- STEP 1 -->
+
+    <div class="col-md-6 col-lg-4">
+
+      <div class="tm-card h-100">
+
+        <div
+          class="mb-3"
+          style="
+            color: #90ee90;
+            font-size: 2rem;
+            font-weight: 800;
+          "
+        >
+          01
+        </div>
+
+        <h4>
+          Create a Goal
+        </h4>
+
+        <p class="text-secondary mb-0">
+          Define something meaningful you want to achieve and
+          describe what success looks like.
+        </p>
+
+      </div>
+
+    </div>
+
+
+
+    <!-- STEP 2 -->
+
+    <div class="col-md-6 col-lg-4">
+
+      <div class="tm-card h-100">
+
+        <div
+          class="mb-3"
+          style="
+            color: #90ee90;
+            font-size: 2rem;
+            font-weight: 800;
+          "
+        >
+          02
+        </div>
+
+        <h4>
+          Divide it into Tasks
+        </h4>
+
+        <p class="text-secondary mb-0">
+          Break a large goal into manageable tasks and assign
+          each task a percentage of the total goal.
+        </p>
+
+      </div>
+
+    </div>
+
+
+
+    <!-- STEP 3 -->
+
+    <div class="col-md-6 col-lg-4">
+
+      <div class="tm-card h-100">
+
+        <div
+          class="mb-3"
+          style="
+            color: #90ee90;
+            font-size: 2rem;
+            font-weight: 800;
+          "
+        >
+          03
+        </div>
+
+        <h4>
+          Connect with a Friend
+        </h4>
+
+        <p class="text-secondary mb-0">
+          Find another TrackMate user, send a friend request
+          and build your accountability network.
+        </p>
+
+      </div>
+
+    </div>
+
+
+
+    <!-- STEP 4 -->
+
+    <div class="col-md-6 col-lg-4">
+
+      <div class="tm-card h-100">
+
+        <div
+          class="mb-3"
+          style="
+            color: #90ee90;
+            font-size: 2rem;
+            font-weight: 800;
+          "
+        >
+          04
+        </div>
+
+        <h4>
+          Choose a Supervisor
+        </h4>
+
+        <p class="text-secondary mb-0">
+          Assign one of your friends to supervise your goal
+          and review your task completion proofs.
+        </p>
+
+      </div>
+
+    </div>
+
+
+
+    <!-- STEP 5 -->
+
+    <div class="col-md-6 col-lg-4">
+
+      <div class="tm-card h-100">
+
+        <div
+          class="mb-3"
+          style="
+            color: #90ee90;
+            font-size: 2rem;
+            font-weight: 800;
+          "
+        >
+          05
+        </div>
+
+        <h4>
+          Submit Proof
+        </h4>
+
+        <p class="text-secondary mb-0">
+          When you finish a task, submit photo evidence and
+          explain what you completed.
+        </p>
+
+      </div>
+
+    </div>
+
+
+
+    <!-- STEP 6 -->
+
+    <div class="col-md-6 col-lg-4">
+
+      <div class="tm-card h-100">
+
+        <div
+          class="mb-3"
+          style="
+            color: #90ee90;
+            font-size: 2rem;
+            font-weight: 800;
+          "
+        >
+          06
+        </div>
+
+        <h4>
+          Get Verified
+        </h4>
+
+        <p class="text-secondary mb-0">
+          Your supervisor approves or rejects your proof.
+          Approval completes the task and improves your rating.
+        </p>
+
+      </div>
+
+    </div>
+
+
+  </div>
+
+</section>
+
+
+
+
+
+<section class="py-5">
+
+  <div class="tm-card">
+
+    <div class="row align-items-center g-5">
+
+      <div class="col-lg-5">
+
+        <p
+          class="text-uppercase mb-2"
+          style="
+            color: #90ee90;
+            letter-spacing: 2px;
+            font-size: 0.8rem;
+            font-weight: 700;
+          "
+        >
+          Accountability
+        </p>
+
+        <h2 class="tm-title">
+          You can't simply mark yourself finished.
+        </h2>
+
+        <p class="text-secondary mt-3">
+          TrackMate introduces a second person into the completion
+          process. That small change makes completing a task mean
+          more than clicking a checkbox.
+        </p>
+
+      </div>
+
+
+      <div class="col-lg-7">
+
+        <div
+          class="p-4"
+          style="
+            background-color: #202020;
+            border-radius: 10px;
+          "
+        >
+
+          <div class="text-center">
+
+            <strong>
+              You finish a task
+            </strong>
+
+            <div
+              class="my-2"
+              style="color: #90ee90;"
+            >
+              ↓
+            </div>
+
+            <strong>
+              Submit photo + explanation
+            </strong>
+
+            <div
+              class="my-2"
+              style="color: #90ee90;"
+            >
+              ↓
+            </div>
+
+            <strong>
+              Supervisor reviews proof
+            </strong>
+
+            <div
+              class="my-3"
+              style="color: #90ee90;"
+            >
+              ↓
+            </div>
+
+
+            <div class="row g-3">
+
+              <div class="col-6">
+
+                <div
+                  class="p-3"
+                  style="
+                    border: 1px solid #90ee90;
+                    border-radius: 8px;
+                  "
+                >
+                  👍 Approve
+
+                  <div class="small text-secondary mt-1">
+                    Task completed<br>
+                    Rating +1
+                  </div>
+                </div>
+
+              </div>
+
+
+              <div class="col-6">
+
+                <div
+                  class="p-3"
+                  style="
+                    border: 1px solid #dc3545;
+                    border-radius: 8px;
+                  "
+                >
+                  👎 Reject
+
+                  <div class="small text-secondary mt-1">
+                    Submit again<br>
+                    Rating -1
+                  </div>
+                </div>
+
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</section>
+
+
+
+<section class="py-5">
+
+  <div class="text-center mb-5">
+
+    <h2 class="tm-title">
+      Why use TrackMate?
+    </h2>
+
+  </div>
+
+
+  <div class="row g-4">
+
+
+    <div class="col-md-4">
+
+      <div class="tm-card h-100">
+
+        <h4>
+          🎯 Break down big goals
+        </h4>
+
+        <p class="text-secondary mb-0">
+          Turn intimidating goals into smaller tasks with clear
+          deadlines and measurable contribution.
+        </p>
+
+      </div>
+
+    </div>
+
+
+    <div class="col-md-4">
+
+      <div class="tm-card h-100">
+
+        <h4>
+          🤝 Stay accountable
+        </h4>
+
+        <p class="text-secondary mb-0">
+          Knowing someone will review your work creates an extra
+          reason to follow through instead of postponing it.
+        </p>
+
+      </div>
+
+    </div>
+
+
+    <div class="col-md-4">
+
+      <div class="tm-card h-100">
+
+        <h4>
+          📈 See real progress
+        </h4>
+
+        <p class="text-secondary mb-0">
+          Your progress bars update from verified task completion,
+          giving you a clear picture of how far you've come.
+        </p>
+
+      </div>
+
+    </div>
+
+
+  </div>
+
+</section>
+
+
+<section class="py-5">
+
+  <div class="text-center mb-5">
+
+    <h2 class="tm-title">
+      Everything in one place
+    </h2>
+
+  </div>
+
+
+  <div class="row g-3">
+
+    {% set features = [
+      "Goal creation",
+      "Weighted tasks",
+      "Deadlines",
+      "Progress tracking",
+      "Friend connections",
+      "Goal supervisors",
+      "Photo proof submission",
+      "Proof reviews",
+      "User ratings"
+    ] %}
+
+
+    {% for feature in features %}
+
+      <div class="col-md-6 col-lg-4">
+
+        <div
+          class="p-3"
+          style="
+            background-color: #151515;
+            border: 1px solid #2a2a2a;
+            border-radius: 8px;
+          "
+        >
+
+          <span style="color: #90ee90;">
+            ✓
+          </span>
+
+          {{ feature }}
+
+        </div>
+
+      </div>
+
+    {% endfor %}
+
+  </div>
+
+</section>
+
+
+
+<section class="py-5">
+
+  <div
+    class="tm-card text-center"
+    style="padding: 55px 30px;"
+  >
+
+    <h2 class="tm-title">
+      Built by students who wanted accountability to feel social.
+    </h2>
+
+    <p
+      class="text-secondary mx-auto mt-3"
+      style="max-width: 650px;"
+    >
+      TrackMate was designed and developed as a collaborative
+      software engineering project. Meet the people behind it
+      and learn why we built it.
+    </p>
+
+    <a
+      href="{{ url_for('auth.about') }}"
+      class="btn btn-outline-light mt-3 px-4"
+    >
+      Meet the Team →
+    </a>
+
+  </div>
+
+</section>
+
+
+
+
+<section class="text-center py-5 mb-5">
+
+  <h2 class="tm-title">
+    Ready to stop saying “I'll do it later”?
+  </h2>
+
+  <p class="text-secondary mt-3">
+    Create your first goal and bring a friend along.
+  </p>
+
+  <a
+    href="{{ url_for('auth.register') }}"
+    class="btn btn-tm btn-lg px-5 mt-3"
+  >
+    Create Account
+  </a>
+
+</section>
+
 
 {% endblock %}
