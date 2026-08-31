@@ -13,8 +13,7 @@
         {{ form.hidden_tag() }}
         <div class="mb-3">
           {{ form.title.label(class="form-label") }} {{ form.title(
-          class="form-control", placeholder="e.g. Learn Python" ) }} {% for
-          error in form.title.errors %}
+          class="form-control") }} {% for error in form.title.errors %}
           <div class="text-danger mt-1">{{ error }}</div>
           {% endfor %}
         </div>
