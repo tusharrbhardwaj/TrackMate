@@ -100,3 +100,7 @@ def home():
         goals=goals,
         supervised_goals=supervised_goals
     )
+
+@auth_bp.route("/about")
+def about():
+    return render_template("about.html")

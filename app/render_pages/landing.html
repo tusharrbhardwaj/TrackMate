@@ -49,7 +49,7 @@ TrackMate
     </div>
 
 
-    {% if current_user.is_authenticated %}
+    <!-- {% if current_user.is_authenticated %}
 
       <div class="mt-4">
 
@@ -62,7 +62,7 @@ TrackMate
 
       </div>
 
-    {% endif %}
+    {% endif %} -->
 
   </div>
 
@@ -76,6 +76,11 @@ TrackMate
 
     <div class="col-lg-8 text-center">
 
+
+      <h2 class="tm-title mb-4">
+        More than a to-do list  
+      </h2>
+
       <p
         class="text-uppercase mb-2"
         style="
@@ -85,12 +90,8 @@ TrackMate
           font-weight: 700;
         "
       >
-        More than a to-do list
-      </p>
-
-      <h2 class="tm-title mb-4">
         Goals are easier when someone keeps you accountable.
-      </h2>
+      </p>
 
       <p class="text-secondary fs-5">
         TrackMate combines goal management with social accountability.
@@ -109,18 +110,6 @@ TrackMate
 <section class="py-5">
 
   <div class="text-center mb-5">
-
-    <p
-      class="text-uppercase mb-2"
-      style="
-        color: #90ee90;
-        letter-spacing: 2px;
-        font-size: 0.8rem;
-        font-weight: 700;
-      "
-    >
-      Simple workflow
-    </p>
 
     <h2 class="tm-title">
       How TrackMate works
@@ -378,42 +367,6 @@ TrackMate
           "
         >
 
-          <div class="text-center">
-
-            <strong>
-              You finish a task
-            </strong>
-
-            <div
-              class="my-2"
-              style="color: #90ee90;"
-            >
-              ↓
-            </div>
-
-            <strong>
-              Submit photo + explanation
-            </strong>
-
-            <div
-              class="my-2"
-              style="color: #90ee90;"
-            >
-              ↓
-            </div>
-
-            <strong>
-              Supervisor reviews proof
-            </strong>
-
-            <div
-              class="my-3"
-              style="color: #90ee90;"
-            >
-              ↓
-            </div>
-
-
             <div class="row g-3">
 
               <div class="col-6">
@@ -464,136 +417,6 @@ TrackMate
       </div>
 
     </div>
-
-  </div>
-
-</section>
-
-
-
-<section class="py-5">
-
-  <div class="text-center mb-5">
-
-    <h2 class="tm-title">
-      Why use TrackMate?
-    </h2>
-
-  </div>
-
-
-  <div class="row g-4">
-
-
-    <div class="col-md-4">
-
-      <div class="tm-card h-100">
-
-        <h4>
-          🎯 Break down big goals
-        </h4>
-
-        <p class="text-secondary mb-0">
-          Turn intimidating goals into smaller tasks with clear
-          deadlines and measurable contribution.
-        </p>
-
-      </div>
-
-    </div>
-
-
-    <div class="col-md-4">
-
-      <div class="tm-card h-100">
-
-        <h4>
-          🤝 Stay accountable
-        </h4>
-
-        <p class="text-secondary mb-0">
-          Knowing someone will review your work creates an extra
-          reason to follow through instead of postponing it.
-        </p>
-
-      </div>
-
-    </div>
-
-
-    <div class="col-md-4">
-
-      <div class="tm-card h-100">
-
-        <h4>
-          📈 See real progress
-        </h4>
-
-        <p class="text-secondary mb-0">
-          Your progress bars update from verified task completion,
-          giving you a clear picture of how far you've come.
-        </p>
-
-      </div>
-
-    </div>
-
-
-  </div>
-
-</section>
-
-
-<section class="py-5">
-
-  <div class="text-center mb-5">
-
-    <h2 class="tm-title">
-      Everything in one place
-    </h2>
-
-  </div>
-
-
-  <div class="row g-3">
-
-    {% set features = [
-      "Goal creation",
-      "Weighted tasks",
-      "Deadlines",
-      "Progress tracking",
-      "Friend connections",
-      "Goal supervisors",
-      "Photo proof submission",
-      "Proof reviews",
-      "User ratings"
-    ] %}
-
-
-    {% for feature in features %}
-
-      <div class="col-md-6 col-lg-4">
-
-        <div
-          class="p-3"
-          style="
-            background-color: #151515;
-            border: 1px solid #2a2a2a;
-            border-radius: 8px;
-          "
-        >
-
-          <span style="color: #90ee90;">
-            ✓
-          </span>
-
-          {{ feature }}
-
-        </div>
-
-      </div>
-
-    {% endfor %}
 
   </div>
 

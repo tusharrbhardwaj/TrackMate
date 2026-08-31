@@ -1,0 +1,205 @@
+{% extends "base.html" %}
+
+{% block title %}
+About - TrackMate
+{% endblock %}
+
+{% block content %}
+
+<style>
+  .about-hero-title {
+    font-size: clamp(3rem, 10vw, 7rem);
+    font-weight: 800;
+    line-height: 1;
+    color: #90ee90;
+    letter-spacing: -2px;
+  }
+
+  .about-subtitle {
+    max-width: 760px;
+    margin: 0 auto;
+    color: #9ca3af;
+    font-size: 1.1rem;
+  }
+
+  .founder-card {
+    background: linear-gradient(180deg, #141414 0%, #101010 100%);
+    border: 1px solid #262626;
+    border-radius: 18px;
+    padding: 28px;
+    height: 100%;
+    box-shadow: 0 0 0 rgba(0,0,0,0);
+    transition: transform 0.2s ease;
+  }
+
+  .founder-card:hover {
+    transform: translateY(-4px);
+  }
+
+  .founder-photo {
+    width: 100%;
+    max-width: 320px;
+    aspect-ratio: 4 / 5;
+    object-fit: cover;
+    border-radius: 18px;
+    border: 2px solid #2c2c2c;
+  }
+
+  .section-title {
+    color: #90ee90;
+    font-weight: 800;
+    margin-bottom: 12px;
+  }
+
+  .soft-text {
+    color: #9ca3af;
+  }
+
+  .feature-box {
+    background-color: #151515;
+    border: 1px solid #262626;
+    border-radius: 14px;
+    padding: 20px;
+    height: 100%;
+  }
+
+  .mini-badge {
+    display: inline-block;
+    padding: 6px 12px;
+    border-radius: 999px;
+    background-color: rgba(144, 238, 144, 0.1);
+    color: #90ee90;
+    font-size: 0.85rem;
+    font-weight: 600;
+    margin-bottom: 10px;
+  }
+
+  .about-divider {
+    border-top: 1px solid #252525;
+    margin: 60px 0;
+  }
+</style>
+
+
+<section class="py-5 text-center">
+
+  <h1 class="about-hero-title">about</h1>
+
+  <p class="about-subtitle mt-4">
+    TrackMate is a goal accountability platform that helps users break big goals into manageable tasks,
+    submit proof of progress, and stay consistent with the support of trusted friends.
+  </p>
+</section>
+
+
+<!-- FOUNDERS -->
+<section class="py-2">
+  <div class="text-center mb-5">
+    <span class="mini-badge">Founders</span>
+    <h2 class="section-title">Meet the people behind TrackMate</h2>
+    <p class="soft-text">
+      Built by students who wanted productivity to feel more social, practical, and accountable.
+    </p>
+  </div>
+
+  <div class="row g-4">
+
+    <!-- TUSHAR -->
+    <div class="col-lg-6">
+      <div class="founder-card">
+        <div class="row g-4 align-items-center">
+          <div class="col-md-5 text-center">
+            <img
+              src="{{ url_for('static', filename='team/tushar.jpeg') }}"
+              alt="Tushar Bharadwaj"
+              class="founder-photo"
+            >
+          </div>
+
+          <div class="col-md-7">
+            <span class="mini-badge">Co-Founder</span>
+            <h3 class="section-title mb-2">Tushar Bharadwaj</h3>
+            <p style="color:#90ee90; font-weight:600;">Software Engineering Student · Builder · Problem Solver</p>
+
+            <p class="soft-text">
+              Tushar helped shape TrackMate from idea to implementation. His focus has been on turning
+              accountability into a usable product experience through goal systems, progress tracking,
+              proof-based completion, and deployment.
+            </p>
+
+            <p class="soft-text mb-0">
+              He is passionate about software, practical innovation, and building systems that genuinely
+              help people stay consistent.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- MYKHAILO -->
+    <div class="col-lg-6">
+      <div class="founder-card">
+        <div class="row g-4 align-items-center">
+          <div class="col-md-5 text-center">
+            <img
+              src="{{ url_for('static', filename='team/mykhailo.jpg') }}"
+              alt="Mykhailo Feniuk"
+              class="founder-photo"
+            >
+          </div>
+
+          <div class="col-md-7">
+            <span class="mini-badge">Co-Founder</span>
+            <h3 class="section-title mb-2">Mykhailo Feniuk</h3>
+            <p style="color:#90ee90; font-weight:600;">Developer · Collaborator · Product Thinker</p>
+
+            <p class="soft-text">
+              Mykhailo contributed to the development of TrackMate’s core workflow and helped shape the
+              supervision and review logic that makes the platform different from traditional task apps.
+            </p>
+
+            <p class="soft-text mb-0">
+              His contribution strengthened the collaborative side of the app and supported the transformation
+              of the concept into a more complete, usable product.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+
+<div class="about-divider"></div>
+
+<!-- TEAM / PROJECT CTA -->
+<section class="py-2 mb-5">
+  <div class="tm-card text-center">
+    <span class="mini-badge">Project</span>
+    <h2 class="section-title">Built as a collaborative software project</h2>
+    <p class="soft-text mx-auto" style="max-width: 700px;">
+      TrackMate is not just a website — it is a practical system designed around goal setting,
+      accountability, collaboration, and measurable progress.
+    </p>
+
+    <div class="mt-4">
+      <a
+        href="https://github.com/tusharrbhardwaj/TrackMate"
+        target="_blank"
+        class="btn btn-tm px-4 me-2"
+      >
+        View GitHub
+      </a>
+
+      <a
+        href="{{ url_for('auth.landing') }}"
+        class="btn btn-outline-light px-4"
+      >
+        Back to Home
+      </a>
+    </div>
+  </div>
+</section>
+
+{% endblock %}
