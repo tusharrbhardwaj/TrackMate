@@ -96,10 +96,10 @@ task.weight %} {% endfor %}
     <form
       method="POST"
       action="{{ url_for(
-              'goals.assign_supervisor',
-              goal_id=goal.id,
-              user_id=friend.id
-            ) }}"
+        'goals.assign_supervisor',
+        goal_id=goal.id,
+        user_id=friend.id
+      ) }}"
     >
       <button type="submit" class="btn btn-tm btn-sm">Assign Supervisor</button>
     </form>
@@ -178,11 +178,9 @@ task.weight %} {% endfor %}
       <span style="color: #90ee90; font-weight: 600"> {{ task.weight }}% </span>
     </div>
 
-    <!-- DEADLINE -->
-
     <div class="mt-2">
       <small class="text-secondary">
-        Deadline: {{ task.deadline.strftime( "%d.%m.%Y %H:%M" ) }}
+        Deadline: {{ task.deadline.strftime("%d.%m.%Y %H:%M") }}
       </small>
     </div>
 
@@ -190,14 +188,13 @@ task.weight %} {% endfor %}
 
     {% if goal.owner_id == current_user.id %}
 
-    <!-- CHECK FOR PENDING PROOF -->
+    <!-- FIND CURRENT PROOF STATUS -->
 
     {% set proof_status = namespace(value="NONE") %} {% for proof in task.proofs
     %} {% if proof.user_id == current_user.id %} {% set proof_status.value =
     proof.status %} {% endif %} {% endfor %}
 
-    <!-- Disable Submit Proof button if proof status is PENDIND or APPROVED -->
-
+    <!-- SUBMIT PROOF BUTTON SWITCH DEPENDING ON PROOF STATUS -->
     <div class="mt-2">
       {% if proof_status.value == "PENDING" or proof_status.value == "APPROVED"
       %}
@@ -214,9 +211,9 @@ task.weight %} {% endfor %}
 
       <a
         href="{{ url_for(
-            'proof.submit_proof',
-            task_id=task.id
-          ) }}"
+              'proof.submit_proof',
+              task_id=task.id
+            ) }}"
         class="btn btn-tm btn-sm"
       >
         Submit Proof
@@ -225,9 +222,11 @@ task.weight %} {% endfor %}
       {% endif %}
     </div>
 
-    <!-- ==================== PROOF STATUS ==================== -->
+    {% endif %}
 
-    {% for proof in task.proofs %} {% if proof.user_id == current_user.id %}
+    <!-- ==================== PROOF INFORMATION ==================== -->
+
+    {% for proof in task.proofs %}
 
     <div
       class="mt-3 p-3"
@@ -248,17 +247,17 @@ task.weight %} {% endfor %}
       {% elif proof.status == "APPROVED" %}
 
       <p class="mb-0 mt-1" style="color: #90ee90">
-        Your proof has been approved.
+        The proof has been approved.
       </p>
 
       {% elif proof.status == "REJECTED" %}
 
-      <p class="text-danger mb-0 mt-1">Your proof was rejected.</p>
+      <p class="text-danger mb-0 mt-1">The proof was rejected.</p>
 
       {% endif %}
     </div>
 
-    {% endif %} {% endfor %} {% endif %}
+    {% endfor %}
   </div>
 
   {% endfor %} {% else %}
