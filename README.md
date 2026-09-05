@@ -4,6 +4,7 @@ TrackMate is a web-based goal and progress tracking application developed as a u
 It allows users to create goals, divide them into weighted tasks, track their progress, and work with friends who can supervise goals and review submitted proof.
 
 =========================================================
+
 Features:
 - Authentication
 - User registration and login
@@ -23,6 +24,7 @@ Features:
 
 
 =========================================================
+
 Architecture:
 - Flask web application architecture.
 - Flask handles HTTP requests and application routing.
@@ -34,6 +36,7 @@ Architecture:
 - The application is divided into modules for authentication, goals, tasks, friends, profiles, and proof management.
 
 =========================================================
+
 Technologies Used:
 - Python 3
 - lask
@@ -50,6 +53,7 @@ Technologies Used:
 - CSS
 
 =========================================================
+
 Database:
 The application uses a relational PostgreSQL database managed through Supabase.
 
@@ -71,6 +75,7 @@ Stores proof submissions associated with tasks, including their status and submi
 Stores relationships and friend requests between users.
 
 =========================================================
+
 Installation Guide:
 
 - Clone the repository:
@@ -100,6 +105,7 @@ python run.py
 http://127.0.0.1:5000/
 
 =========================================================
+
 Testing:
 The project contains automated tests. To run them:
 - pytest
