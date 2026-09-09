@@ -8,6 +8,8 @@ from app.models.user import User
 from app.models.friendship import Friendship
 from app.models.task import Task
 from app.models.proof import Proof
+from app.core_adapter import as_core_goal, as_goal_model
+from trackmate_lib import CreateGoal, ForbiddenError, GoalService, NotFoundError
 
 
 goals_bp = Blueprint(
@@ -31,14 +33,11 @@ def create_goal():
     form = GoalForm()
 
     if form.validate_on_submit():
-
-        goal = Goal(
-            owner_id=current_user.id,
-            title=form.title.data,
-            description=form.description.data
+        core_goal = GoalService.create(
+            current_user.id,
+            CreateGoal(form.title.data, form.description.data),
         )
-
-        db.session.add(goal)
+        db.session.add(as_goal_model(core_goal))
         db.session.commit()
 
         flash(
@@ -61,20 +60,16 @@ def create_goal():
 @goals_bp.route("/<int:goal_id>")
 @login_required
 def view_goal(goal_id):
-
     goal = db.session.get(
         Goal,
         goal_id
     )
 
-    # This logic is used set a friend supervisor from alrady made friends on the application
-    if goal is None:
+    try:
+        GoalService.require_visible(as_core_goal(goal), current_user.id)
+    except NotFoundError:
         return "Goal not found", 404
-
-    if (
-    goal.owner_id != current_user.id
-    and goal.supervisor_id != current_user.id
-    ):
+    except ForbiddenError:
         return "Access denied", 403
 
 
