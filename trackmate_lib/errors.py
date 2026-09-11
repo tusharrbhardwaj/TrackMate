@@ -1,10 +1,8 @@
 class NotFoundError(Exception):
     pass
 
-
 class ForbiddenError(Exception):
     pass
-
 
 class AllocationExceededError(Exception):
     def __init__(self, current_weight: int):

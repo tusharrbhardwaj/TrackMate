@@ -8,7 +8,6 @@ class GoalService:
     @staticmethod
     def create(owner_id: int, command: CreateGoal) -> Goal:
         return Goal(None, owner_id, command.title, command.description)
-
     @staticmethod
     def require_visible(goal: Goal | None, actor_id: int) -> Goal:
         if goal is None:
@@ -39,7 +38,6 @@ class TaskService:
         current_weight = sum(task.weight for task in existing_tasks)
         if current_weight + command.weight > 100:
             raise AllocationExceededError(current_weight)
-
         return Task(
             None,
             goal.id,
