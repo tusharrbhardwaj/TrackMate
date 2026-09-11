@@ -1,9 +1,17 @@
-from flask import Blueprint, render_template, redirect, url_for, flash;
-from flask_login import login_required, current_user;
-from app import db;
-from app.forms.task import TaskForm;
-from app.models.goal import Goal;
-from app.models.task import Task;
+from flask import Blueprint, render_template, redirect, url_for, flash
+from flask_login import login_required, current_user
+
+from app import db
+from app.core_adapter import as_core_goal, as_core_task, as_task_model
+from app.forms.task import TaskForm
+from app.models.goal import Goal
+from trackmate_lib import (
+    AllocationExceededError,
+    CreateTask,
+    ForbiddenError,
+    NotFoundError,
+    TaskService,
+)
 
 
 tasks_bp = Blueprint(
@@ -17,23 +25,33 @@ tasks_bp = Blueprint(
 @login_required
 def create_task(goal_id):
     goal = db.session.get(Goal, goal_id)
-    if goal is None:
+    core_goal = as_core_goal(goal)
+    try:
+        TaskService.require_owner(core_goal, current_user.id)
+    except NotFoundError:
         return "Goal not found", 404
-    if goal.owner_id != current_user.id:
+    except ForbiddenError:
         return "Access denied", 403
     
     form = TaskForm()
 
     if form.validate_on_submit():
-        current_weight = sum(
-            task.weight for task in goal.tasks
-        )
-        new_weight = current_weight + form.weight.data
-
-        if new_weight > 100:
+        try:
+            core_task = TaskService.create(
+                core_goal,
+                [as_core_task(task) for task in goal.tasks],
+                current_user.id,
+                CreateTask(
+                    form.title.data,
+                    form.description.data,
+                    form.deadline.data,
+                    form.weight.data,
+                ),
+            )
+        except AllocationExceededError as error:
             flash(
                 f"Task weights cannot be more than 100%. "
-                f"Currently used: {current_weight}%.",
+                f"Currently used: {error.current_weight}%.",
                 "error"
             )
             return render_template(
@@ -41,15 +59,7 @@ def create_task(goal_id):
                 form=form,
                 goal=goal
             )
-        task = Task(
-            goal_id=goal.id,
-            title=form.title.data,
-            description=form.description.data,
-            deadline=form.deadline.data,
-            weight=form.weight.data
-        )
-
-        db.session.add(task)
+        db.session.add(as_task_model(core_task))
         db.session.commit()
 
         flash("Task created successfully.", "success")
