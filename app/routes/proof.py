@@ -40,6 +40,15 @@ def submit_proof(task_id):
     if task.goal.owner_id != current_user.id:
         return "Access denied", 403
 
+    if task.status != "ACTIVE":
+        flash(
+            "This task is not available for proof submission.",
+            "error"
+        )
+        return redirect(
+            url_for("goals.view_goal", goal_id=task.goal_id)
+        )
+
     # Making sure that user didnt upload a proof before
     existing_proof = db.session.execute(
     db.select(Proof).where(

@@ -310,6 +310,11 @@ def reject_request(request_id):
         return "Access denied", 403
 
 
+    if friendship.status != "PENDING":
+
+        return "Request already processed", 400
+
+
     db.session.delete(friendship)
 
     db.session.commit()

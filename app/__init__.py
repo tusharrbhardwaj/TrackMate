@@ -23,7 +23,7 @@ def load_user(user_id):
     from app.models.user import User
     return db.session.get(User, int(user_id))
 
-def create_app():
+def create_app(test_config=None):
     app = Flask(
         __name__,
         instance_relative_config=True,
@@ -39,9 +39,12 @@ def create_app():
     app.config["PROOF_UPLOAD_FOLDER"] = os.path.join(
         app.static_folder, "uploads", "proofs"
     )
-    os.makedirs(app.config["PROOF_UPLOAD_FOLDER"], exist_ok=True)
-    
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
+
+    if test_config is not None:
+        app.config.update(test_config)
+
+    os.makedirs(app.config["PROOF_UPLOAD_FOLDER"], exist_ok=True)
 
     db.init_app(app)
     login_manager.init_app(app)

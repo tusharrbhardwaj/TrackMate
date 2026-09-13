@@ -1,4 +1,6 @@
-from flask import Blueprint, render_template, redirect, url_for, flash
+import os
+
+from flask import Blueprint, current_app, render_template, redirect, url_for, flash
 from flask_login import login_required, current_user
 
 from app import db
@@ -232,10 +234,24 @@ def delete_goal(goal_id):
         return "Access denied", 403
 
 
-    # Delete proofs first, then tasks
-    for task in list(goal.tasks):
+    # Delete proofs first, then tasks.
+    tasks = db.session.execute(
+        db.select(Task).where(Task.goal_id == goal.id)
+    ).scalars().all()
 
-        for proof in list(task.proofs):
+    for task in tasks:
+
+        proofs = db.session.execute(
+            db.select(Proof).where(Proof.task_id == task.id)
+        ).scalars().all()
+
+        for proof in proofs:
+            photo_file = os.path.join(
+                current_app.config["PROOF_UPLOAD_FOLDER"],
+                os.path.basename(proof.photo_path)
+            )
+            if os.path.exists(photo_file):
+                os.remove(photo_file)
             db.session.delete(proof)
 
         db.session.delete(task)
