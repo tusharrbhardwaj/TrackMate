@@ -51,26 +51,13 @@ def create_user_and_task(client, app):
 
 
 # Successful proof submission
-def test_submit_proof_success(client, app, monkeypatch):
+def test_submit_proof_success(client, app):
     task_id = create_user_and_task(client, app)
-
-    # Prevent real upload to Supabase
-    def fake_upload(*args, **kwargs):
-        return {"path": "test-image.png"}
-
-    monkeypatch.setattr(
-        "app.routes.proof.supabase.storage.from_",
-        lambda bucket: type(
-            "Storage",
-            (),
-            {"upload": fake_upload}
-        )()
-    )
 
     response = client.post(
         f"/proof/submit/{task_id}",
         data={
-            "description": "I completed the task successfully ly ly",
+            "description": " ".join(["completed"] * 100),
             "photo": (
                 BytesIO(b"fake image"),
                 "test.png"
@@ -87,23 +74,18 @@ def test_submit_proof_success(client, app, monkeypatch):
         proof = db.session.execute(
             db.select(Proof)
         ).scalar_one()
-
         assert proof.task_id == task_id
         assert proof.status == "PENDING"
-        assert proof.description == "I completed the task successfully ly ly"
+        assert proof.description == " ".join(["completed"] * 100)
 
 
 # Explanation cannot contain more than 100 words
-def test_proof_description_too_long(client, app):
+def test_proof_description_too_short(client, app):
     task_id = create_user_and_task(client, app)
-    long_description = " ".join(
-        ["word"] * 101
-    )
-
     response = client.post(
         f"/proof/submit/{task_id}",
         data={
-            "description": long_description,
+            "description": "Too short.",
             "photo": (
                 BytesIO(b"fake image"),
                 "test.png"
@@ -112,7 +94,7 @@ def test_proof_description_too_long(client, app):
         content_type="multipart/form-data"
     )
     assert response.status_code == 200
-    assert b"Explanation cannot contain more than 100 words." in response.data
+    assert b"Explanation must contain at least 100 words." in response.data
 
 
 # Image is required
@@ -129,23 +111,12 @@ def test_proof_requires_image(client, app):
 
 
 # User cannot submit another proof while one is pending
-def test_cannot_submit_second_pending_proof(client, app, monkeypatch):
+def test_cannot_submit_second_pending_proof(client, app):
     task_id = create_user_and_task(client, app)
-    def fake_upload(*args, **kwargs):
-        return {"path": "test-image.png"}
-    monkeypatch.setattr(
-        "app.routes.proof.supabase.storage.from_",
-        lambda bucket: type(
-            "Storage",
-            (),
-            {"upload": fake_upload}
-        )()
-    )
-
     first_response = client.post(
         f"/proof/submit/{task_id}",
         data={
-            "description": "First proof.",
+            "description": " ".join(["first"] * 100),
             "photo": (
                 BytesIO(b"fake image"),
                 "test.png"
@@ -158,7 +129,7 @@ def test_cannot_submit_second_pending_proof(client, app, monkeypatch):
     second_response = client.post(
         f"/proof/submit/{task_id}",
         data={
-            "description": "Second proof.",
+            "description": " ".join(["second"] * 100),
             "photo": (
                 BytesIO(b"fake image"),
                 "test2.png"

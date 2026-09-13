@@ -2,5 +2,6 @@
 __pycache__/
 *.pyc
 instance/*.db
+app/static/uploads/
 .pytest_cache/
 .env

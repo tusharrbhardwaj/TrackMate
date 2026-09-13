@@ -1,15 +1,14 @@
 from flask_wtf import FlaskForm
 from flask_wtf.file import FileField, FileAllowed, FileRequired
 from wtforms import TextAreaField, SubmitField
-from wtforms.validators import DataRequired, Length
+from wtforms.validators import DataRequired
 
 
 class ProofForm(FlaskForm):
     description = TextAreaField(
         "Explanation",
         validators=[
-            DataRequired(),
-            Length(max=1000)
+            DataRequired()
         ]
     )
     photo = FileField(

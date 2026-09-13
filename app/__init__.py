@@ -31,8 +31,15 @@ def create_app():
     )
     app.config["SECRET_KEY"] = "dev-secret-key"
     
-    #Below line creates the same schema in postgres remote db instead of local sqlite
-    app.config["SQLALCHEMY_DATABASE_URI"] = os.getenv("DATABASE_URL")
+    # Local SQLite database, stored in the Flask instance folder.
+    app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///trackmate-local.db"
+    # Previous remote Supabase/PostgreSQL configuration:
+    # app.config["SQLALCHEMY_DATABASE_URI"] = os.getenv("DATABASE_URL")
+
+    app.config["PROOF_UPLOAD_FOLDER"] = os.path.join(
+        app.static_folder, "uploads", "proofs"
+    )
+    os.makedirs(app.config["PROOF_UPLOAD_FOLDER"], exist_ok=True)
     
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 

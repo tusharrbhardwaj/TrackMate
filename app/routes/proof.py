@@ -1,6 +1,8 @@
 import uuid
+import os
 from flask import (
     Blueprint,
+    current_app,
     render_template,
     redirect,
     url_for,
@@ -13,7 +15,10 @@ from app.models.task import Task
 from app.models.proof import Proof
 from app.forms.proof import ProofForm
 from app.models.goal import Goal
-from app.supabase import supabase
+from werkzeug.utils import secure_filename
+
+# Previous Supabase Storage client:
+# from app.supabase import supabase
 
 
 proof_bp = Blueprint(
@@ -78,22 +83,26 @@ def submit_proof(task_id):
         filename = (
             str(uuid.uuid4())
             + "_"
-            + file.filename
+            + secure_filename(file.filename)
         )
-        # Upload image to Supabase 
-        supabase.storage.from_("proofs").upload(
-            filename,
-            file.read(),
-            {
-                "content-type": file.content_type
-            }
+        # Save the proof image locally in app/static/uploads/proofs.
+        file.save(
+            os.path.join(current_app.config["PROOF_UPLOAD_FOLDER"], filename)
         )
+        photo_path = f"uploads/proofs/{filename}"
+
+        # Previous Supabase Storage upload:
+        # supabase.storage.from_("proofs").upload(
+        #     filename,
+        #     file.read(),
+        #     {"content-type": file.content_type},
+        # )
         # Create Proof record
         proof = Proof(
             task_id=task.id,
             user_id=current_user.id,
             description=form.description.data,
-            photo_path=filename,
+            photo_path=photo_path,
             status="PENDING"
         )
 
@@ -115,15 +124,13 @@ def submit_proof(task_id):
         form=form,
         task=task
     )
+
     
 #supervisor review page
-
 @proof_bp.route("/reviews")
 @login_required
 def reviews():
-
     pending_proofs = db.session.execute(
-
         db.select(Proof)
         .join(Task, Proof.task_id == Task.id)
         .join(Goal, Task.goal_id == Goal.id)
@@ -131,40 +138,27 @@ def reviews():
             Goal.supervisor_id == current_user.id,
             Proof.status == "PENDING"
         )
-
     ).scalars().all()
-
 
     review_items = []
 
     for proof in pending_proofs:
+        photo_url = url_for("static", filename=proof.photo_path)
 
-        photo_url = None
-
-        try:
-
-            signed = (
-                supabase.storage
-                .from_("proofs")
-                .create_signed_url(
-                    proof.photo_path,
-                    3600
-                )
-            )
-
-            photo_url = (
-                signed.get("signedURL")
-                or signed.get("signed_url")
-                or signed.get("url")
-            )
-
-        except Exception as error:
-
-            print(
-                "Could not create proof image URL:",
-                error
-            )
-
+        # Previous Supabase signed-URL generation:
+        # try:
+        #     signed = (
+        #         supabase.storage
+        #         .from_("proofs")
+        #         .create_signed_url(proof.photo_path, 3600)
+        #     )
+        #     photo_url = (
+        #         signed.get("signedURL")
+        #         or signed.get("signed_url")
+        #         or signed.get("url")
+        #     )
+        # except Exception as error:
+        #     print("Could not create proof image URL:", error)
 
         review_items.append(
             {
@@ -188,50 +182,37 @@ def reviews():
 )
 @login_required
 def approve_proof(proof_id):
-
     proof = db.session.get(
         Proof,
         proof_id
     )
 
-
     if proof is None:
-
         return "Proof not found", 404
 
 
     # ONLY assigned supervisor can review it
     if proof.task.goal.supervisor_id != current_user.id:
-
         return "Access denied", 403
 
-
     if proof.status != "PENDING":
-
         flash(
             "This proof has already been reviewed.",
             "error"
         )
-
         return redirect(
             url_for("proof.reviews")
         )
 
-
     proof.status = "APPROVED"
-
     proof.task.status = "COMPLETED"
-
     proof.task.completed_at = datetime.now(
         timezone.utc
     )
 
     # Owner receives +1 rating
     proof.user.rating += 1
-
-
     db.session.commit()
-
 
     flash(
         f"Proof approved. {proof.user.username} received +1 rating.",
@@ -252,42 +233,33 @@ def approve_proof(proof_id):
 )
 @login_required
 def reject_proof(proof_id):
-
     proof = db.session.get(
         Proof,
         proof_id
     )
 
-
     if proof is None:
-
         return "Proof not found", 404
 
 
     # ONLY assigned supervisor can review it
     if proof.task.goal.supervisor_id != current_user.id:
-
         return "Access denied", 403
 
 
     if proof.status != "PENDING":
-
         flash(
             "This proof has already been reviewed.",
             "error"
         )
-
         return redirect(
             url_for("proof.reviews")
         )
 
 
     proof.status = "REJECTED"
-
     proof.task.status = "ACTIVE"
-
     proof.task.completed_at = None
-
     # Owner loses 1 rating
     proof.user.rating -= 1
 
