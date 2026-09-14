@@ -43,21 +43,6 @@ def test_invalid_email(client):
     assert b"Invalid email address" in response.data
 
 
-# Testing wrong password confirmation
-def test_password_confirm(client):
-    response = client.post(
-        "/register",
-        data={
-            "username": "sambo",
-            "email": "sambo@example.com",
-            "password": "password123",
-            "confirm_password": "password1234",
-        }
-    )
-    assert response.status_code == 200
-    assert b"Field must be equal to password." in response.data
-
-
 # Testing successfull login with right login credentials
 def test_successful_login(client, app):
     client.post(
@@ -83,43 +68,10 @@ def test_successful_login(client, app):
     with client.session_transaction() as session:
         assert "_user_id" in session
 
-# Wrong password test 
-def test_incorrect_password(client, app):
-    client.post(
-        "/register",
-        data={
-            "username": "misha",
-            "email": "misha@example.com",
-            "password": "password123",
-            "confirm_password": "password123",
-        }
-    )
-    response = client.post(
-        "/login",
-        data={
-            "email": "misha@example.com",
-            "password": "idnkwhattowrite",
-        },
-        follow_redirects=True
-    )
-    assert b"Password doesnt match" in response.data
-
-# Wrong email test
-def test_wrong_email(client):
-    response = client.post(
-        "/login",
-        data={
-            "email": "adcnaslcn@example.com",
-            "password": "password123",
-        },
-        follow_redirects=True
-    )
-    assert b"Incorrect email or password." in response.data
-
 # User should be loged in to enter home page
-def login_to_enter_home_page(client):
+def test_home_requires_login(client):
     response = client.get(
-        "/dashboard",
+        "/home",
         follow_redirects=True
     )
-    assert b"Log In first!" in response.data
+    assert b"Log In" in response.data

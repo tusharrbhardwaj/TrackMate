@@ -4,13 +4,15 @@ import pytest;
 from app import create_app, db;
 
 @pytest.fixture
-def app():
-    app = create_app()
-    app.config.update(
+def app(tmp_path):
+    app = create_app(
         {
             "TESTING": True,
-            "SQLALCHEMY_DATABASE_URI": "sqlite:///:memory:",
+            "SQLALCHEMY_DATABASE_URI": (
+                f"sqlite:///{(tmp_path / 'test.db').as_posix()}"
+            ),
             "WTF_CSRF_ENABLED": False,
+            "PROOF_UPLOAD_FOLDER": str(tmp_path / "proofs"),
         }
     )
     with app.app_context():

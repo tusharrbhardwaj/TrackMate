@@ -1,8 +1,10 @@
-import os
-from supabase import create_client
+"""Legacy Supabase configuration retained only as commented reference."""
 
-# Creating supabase client to communicate to it directly
-supabase = create_client(
-    os.getenv("SUPABASE_URL"),
-    os.getenv("SUPABASE_KEY")
-)
+# import os
+# from supabase import create_client
+
+# Previous Supabase client:
+# supabase = create_client(
+#     os.getenv("SUPABASE_URL"),
+#     os.getenv("SUPABASE_KEY"),
+# )

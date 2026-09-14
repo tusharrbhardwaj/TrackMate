@@ -1,6 +1,6 @@
 from flask_wtf import FlaskForm;
 from wtforms import (StringField, TextAreaField, DateTimeLocalField, IntegerField, SubmitField);
-from wtforms.validators import ( DataRequired, Length, NumberRange);
+from wtforms.validators import (DataRequired, InputRequired, Length, NumberRange)
 
 
 class TaskForm(FlaskForm):
@@ -27,7 +27,7 @@ class TaskForm(FlaskForm):
     weight = IntegerField(
         "Weight (%)",
         validators=[
-            DataRequired(),
+            InputRequired(),
             NumberRange(min=1, max=100)
         ]
     )
