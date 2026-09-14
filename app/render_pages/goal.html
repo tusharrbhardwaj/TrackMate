@@ -199,8 +199,21 @@ task.weight %} {% endfor %}
     <!-- ==================== SUBMIT PROOF ==================== -->
 
     <div class="mt-2">
-      {% if proof_status.value == "PENDING" or proof_status.value == "APPROVED"
-      %}
+      {% if task.status == "EXPIRED" %}
+
+      <button
+        class="btn btn-secondary btn-sm"
+        disabled
+        style="cursor: not-allowed; opacity: 0.6"
+      >
+        Deadline Expired
+      </button>
+
+      <small class="text-danger ms-2"> Deadline missed · -1 rating </small>
+
+      {% elif proof_status.value == "PENDING" or proof_status.value ==
+      "APPROVED" or task.status == "PENDING_REVIEW" or task.status ==
+      "COMPLETED" %}
 
       <button
         class="btn btn-secondary btn-sm"
@@ -214,9 +227,9 @@ task.weight %} {% endfor %}
 
       <a
         href="{{ url_for(
-                  'proof.submit_proof',
-                  task_id=task.id
-                ) }}"
+                'proof.submit_proof',
+                task_id=task.id
+              ) }}"
         class="btn btn-tm btn-sm"
       >
         Submit Proof
@@ -224,9 +237,7 @@ task.weight %} {% endfor %}
 
       {% endif %}
     </div>
-
     {% endif %}
-
     <!-- ==================== PROOF INFORMATION ==================== -->
 
     {% if task.proofs %} {% for proof in task.proofs %}
