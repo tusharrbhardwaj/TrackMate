@@ -34,6 +34,21 @@ def submit_proof(task_id):
         return "Task not found", 404
     if task.goal.owner_id != current_user.id:
         return "Access denied", 403
+    
+    # Do not allow proof submission after deadline
+    if task.status == "EXPIRED":
+
+        flash(
+            "This task's deadline has expired. Proof can no longer be submitted.",
+            "error"
+        )
+
+        return redirect(
+            url_for(
+                "goals.view_goal",
+                goal_id=task.goal_id
+            )
+        )
 
     # Making sure that user didnt upload a proof before
     existing_proof = db.session.execute(
