@@ -31,7 +31,9 @@ Architecture:
 - Flask Blueprints separate the application into different functional areas.
 - Jinja2 templates are used to generate the web pages.
 - SQLAlchemy ORM is used to communicate with the database.
-- Supabase is used for the application's PostgreSQL database and proof file storage.
+- SQLite stores application data locally in `instance/trackmate-local.db`.
+- Proof images are stored locally in `app/static/uploads/proofs/`.
+- `trackmate_lib` provides small framework-independent goal and task rules.
 - Flask-Login manages authenticated user sessions.
 - The application is divided into modules for authentication, goals, tasks, friends, profiles, and proof management.
 
@@ -39,14 +41,13 @@ Architecture:
 
 Technologies Used:
 - Python 3
-- lask
+- Flask
 - Flask-SQLAlchemy
 - SQLAlchemy
 - Flask-Login
 - Flask-WTF
 - WTForms
-- PostgreSQL
-- Supabase
+- SQLite
 - Jinja2
 - Bootstrap 5
 - HTML
@@ -55,7 +56,7 @@ Technologies Used:
 =========================================================
 
 Database:
-The application uses a relational PostgreSQL database managed through Supabase.
+The application uses a local SQLite relational database. This makes the project runnable and testable without Supabase credentials or an internet connection.
 
 
 The main entities are:
@@ -93,13 +94,8 @@ Windows PowerShell: .venv\Scripts\Activate.ps1
 - Install the required dependencies:
 pip install -r requirements.txt
 
-- Create a .env file in the project root and add the required database and Supabase configuration:
-DATABASE_URL=your_postgresql_connection_string
-SUPABASE_URL=your_supabase_project_url
-SUPABASE_KEY=your_supabase_api_key
-
 - Start the application:
-python run.py
+python -m flask --app app.run run --debug
 
 - Open the application in a browser:
 http://127.0.0.1:5000/
@@ -108,7 +104,15 @@ http://127.0.0.1:5000/
 
 Testing:
 The project contains automated tests. To run them:
-- pytest
+- python -m pytest
+
+Coverage report:
+- python -m pytest --cov=app --cov=trackmate_lib --cov-branch --cov-report=term-missing --cov-report=html
+
+Static analysis:
+- ruff check app trackmate_lib tests
+
+Testing documentation and the defect log are in `docs/`.
 
 
 TrackMate was developed as a university Software Design and Modelling project and provides the main functionality for goal management, task tracking, friend supervision, proof submission, and proof review.

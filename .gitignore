@@ -4,4 +4,6 @@ __pycache__/
 instance/*.db
 app/static/uploads/
 .pytest_cache/
+htmlcov/
+.coverage
 .env
