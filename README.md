@@ -88,6 +88,7 @@ Requirements: Python 3.12 or newer and Git.
 
 ```powershell
 git clone https://github.com/tusharrbhardwaj/TrackMate.git
+====
 cd TrackMate
 ```
 
