@@ -88,13 +88,14 @@ Requirements: Python 3.12 or newer and Git.
 
 Powershell:
 git clone https://github.com/tusharrbhardwaj/TrackMate.git
+====
 cd TrackMate
 
 2. Create and activate a virtual environment:
 
 Powershell:
-python -m venv .venv
-.venv\Scripts\Activate.ps1
+Crete: python -m venv .venv
+Activate: .venv\Scripts\Activate.ps1
 
 For Git Bash, use: source .venv/Scripts/activate
 
