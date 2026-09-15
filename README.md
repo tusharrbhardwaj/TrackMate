@@ -94,7 +94,7 @@ cd TrackMate
 
 Powershell:
 python -m venv .venv
-.\.venv\Scripts\Activate.ps1
+.venv\Scripts\Activate.ps1
 
 For Git Bash, use: source .venv/Scripts/activate
 
