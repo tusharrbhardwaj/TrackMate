@@ -119,7 +119,7 @@ python -m flask --app app.run run --debug
 http://127.0.0.1:5000/
 ```
 
-5. Open http://127.0.0.1:5000/ in a browser.
+5. Open http://127.0.0.1:5000/ in a browser and register an account.
 
 No `.env` file, Supabase account, remote database, or internet connection is required to run the application. On its first start, TrackMate creates:
 
@@ -141,15 +141,11 @@ python -m pytest
 
 Coverage report:
 
-- python -m pytest --cov=app --cov=trackmate_lib --cov-branch --cov-report=term-missing --cov-report=html
-
 ```powershell
 python -m pytest --cov=app --cov=trackmate_lib --cov-branch --cov-report=term-missing --cov-report=html
 ```
 
 Static analysis:
-
-- ruff check app trackmate_lib tests
 
 ```powershell
 ruff check app trackmate_lib tests
