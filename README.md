@@ -86,14 +86,13 @@ Requirements: Python 3.12 or newer and Git.
 
 1. Clone and enter the project:
 
-```powershell
+Powershell
 git clone https://github.com/tusharrbhardwaj/TrackMate.git
 cd TrackMate
-```
 
 2. Create and activate a virtual environment:
 
-````powershell
+Powershell
 python -m venv .venv
 .\.venv\Scripts\Activate.ps1
 
@@ -101,15 +100,13 @@ For Git Bash, use: source .venv/Scripts/activate
 
 3. Install dependencies:
 
-```powershell
+Powershell
 python -m pip install -r requirements.txt
-````
 
 4. Start the application:
 
-```powershell
+Powershell
 python -m flask --app app.run run --debug
-```
 
 5. Open http://127.0.0.1:5000/ in a browser and register an account.
 
@@ -125,21 +122,18 @@ Both locations are ignored by Git, so each developer gets private local data.
 Testing:
 The project contains automated tests. To run them:
 
-```powershell
+Powershell
 python -m pytest
-```
 
 Coverage report:
 
-```powershell
+Powershell
 python -m pytest --cov=app --cov=trackmate_lib --cov-branch --cov-report=term-missing --cov-report=html
-```
 
 Static analysis:
 
-```powershell
+Powershell
 ruff check app trackmate_lib tests
-```
 
 Testing documentation and the defect log are in `docs/`.
 
