@@ -1,11 +1,12 @@
 TRACKMATE
 
-TrackMate is a web-based goal and progress tracking application developed as a university Software Design and Modelling project. 
+TrackMate is a web-based goal and progress tracking application developed as a university Software Design and Modelling project.
 It allows users to create goals, divide them into weighted tasks, track their progress, and work with friends who can supervise goals and review submitted proof.
 
 =========================================================
 
 Features:
+
 - Authentication
 - User registration and login
 - Login using username or email
@@ -21,11 +22,12 @@ Features:
 - Submit task completion proof
 - Approve / Reject the proof
 - User rating
-
+- Expire overdue active tasks and decrease the owner's rating
 
 =========================================================
 
 Architecture:
+
 - Flask web application architecture.
 - Flask handles HTTP requests and application routing.
 - Flask Blueprints separate the application into different functional areas.
@@ -40,6 +42,7 @@ Architecture:
 =========================================================
 
 Technologies Used:
+
 - Python 3
 - Flask
 - Flask-SQLAlchemy
@@ -58,63 +61,80 @@ Technologies Used:
 Database:
 The application uses a local SQLite relational database. This makes the project runnable and testable without Supabase credentials or an internet connection.
 
-
 The main entities are:
+
 - Users:
-Stores user accounts, authentication information, ratings, and other user-related data.
+  Stores user accounts, authentication information, ratings, and other user-related data.
 
 - Goals:
-Stores goals created by users and their assigned supervisors.
+  Stores goals created by users and their assigned supervisors.
 
 - Tasks:
-Stores tasks belonging to goals, including their title, description, deadline, weight, and status.
+  Stores tasks belonging to goals, including their title, description, deadline, weight, and status.
 
 - Proofs:
-Stores proof submissions associated with tasks, including their status and submitted information.
+  Stores proof submissions associated with tasks, including their status and submitted information.
 
 - Friendships:
-Stores relationships and friend requests between users.
+  Stores relationships and friend requests between users.
 
 =========================================================
 
 Installation Guide:
 
-- Clone the repository:
-git clone https://github.com/tusharrbhardwaj/TrackMate.git
+Requirements: Python 3.12 or newer and Git.
 
-- Open the project directory:
+1. Clone and enter the project:
+
+Powershell:
+git clone https://github.com/tusharrbhardwaj/TrackMate.git
 cd TrackMate
 
-- Create a virtual environment:
+2. Create and activate a virtual environment:
+
+Powershell:
 python -m venv .venv
+.\.venv\Scripts\Activate.ps1
 
-- Activate the virtual environment.
-Windows PowerShell: .venv\Scripts\Activate.ps1
+For Git Bash, use: source .venv/Scripts/activate
 
-- Install the required dependencies:
-pip install -r requirements.txt
+3. Install dependencies:
 
-- Start the application:
+Powershell:
+python -m pip install -r requirements.txt
+
+4. Start the application:
+
+Powershell:
 python -m flask --app app.run run --debug
 
-- Open the application in a browser:
-http://127.0.0.1:5000/
+5. Open http://127.0.0.1:5000/ in a browser and register an account.
+
+No `.env` file, Supabase account, remote database, or internet connection is required to run the application. On its first start, TrackMate creates:
+
+- `instance/trackmate-local.db` for SQLite data;
+- `app/static/uploads/proofs/` for uploaded proof images.
+
+Both locations are ignored by Git, so each developer gets private local data.
 
 =========================================================
 
 Testing:
 The project contains automated tests. To run them:
-- python -m pytest
+
+Powershell:
+python -m pytest
 
 Coverage report:
-- python -m pytest --cov=app --cov=trackmate_lib --cov-branch --cov-report=term-missing --cov-report=html
+
+Powershell:
+python -m pytest --cov=app --cov=trackmate_lib --cov-branch --cov-report=term-missing --cov-report=html
 
 Static analysis:
-- ruff check app trackmate_lib tests
+
+Powershell:
+ruff check app trackmate_lib tests
 
 Testing documentation and the defect log are in `docs/`.
 
-
 TrackMate was developed as a university Software Design and Modelling project and provides the main functionality for goal management, task tracking, friend supervision, proof submission, and proof review.
-
-
