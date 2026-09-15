@@ -86,29 +86,40 @@ Requirements: Python 3.12 or newer and Git.
 
 1. Clone and enter the project:
 
-Powershell:
+```powershell
 git clone https://github.com/tusharrbhardwaj/TrackMate.git
 cd TrackMate
+```
 
 2. Create and activate a virtual environment:
 
-Powershell:
+```powershell
 python -m venv .venv
 .\.venv\Scripts\Activate.ps1
+```
 
-For Git Bash, use: source .venv/Scripts/activate
+For Git Bash, use:
+
+```bash
+source .venv/Scripts/activate
+```
 
 3. Install dependencies:
 
-Powershell:
+```powershell
 python -m pip install -r requirements.txt
+```
 
 4. Start the application:
 
-Powershell:
+```powershell
 python -m flask --app app.run run --debug
 
-5. Open http://127.0.0.1:5000/ in a browser and register an account.
+- Open the application in a browser:
+http://127.0.0.1:5000/
+```
+
+5. Open http://127.0.0.1:5000/ in a browser.
 
 No `.env` file, Supabase account, remote database, or internet connection is required to run the application. On its first start, TrackMate creates:
 
@@ -122,18 +133,27 @@ Both locations are ignored by Git, so each developer gets private local data.
 Testing:
 The project contains automated tests. To run them:
 
-Powershell:
+- python -m pytest
+
+```powershell
 python -m pytest
+```
 
 Coverage report:
 
-Powershell:
+- python -m pytest --cov=app --cov=trackmate_lib --cov-branch --cov-report=term-missing --cov-report=html
+
+```powershell
 python -m pytest --cov=app --cov=trackmate_lib --cov-branch --cov-report=term-missing --cov-report=html
+```
 
 Static analysis:
 
-Powershell:
+- ruff check app trackmate_lib tests
+
+```powershell
 ruff check app trackmate_lib tests
+```
 
 Testing documentation and the defect log are in `docs/`.
 
